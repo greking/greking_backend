@@ -13,26 +13,36 @@ java {
 	}
 }
 
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
-}
-
 repositories {
 	mavenCentral()
 }
 
 dependencies {
+	// Spring Boot Starters
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-authorization-server'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+	// Lombok
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+
+	// Testing
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	// Validation API
+	implementation 'jakarta.validation:jakarta.validation-api:3.0.0'
+	// Hibernate Validator
+//	implementation 'org.hibernate.validator:hibernate-validator:7.0.1.Final'
+	// EL (Expression Language) API, Hibernate Validator가 필요로 함
+	implementation 'org.glassfish:jakarta.el:4.0.2'
+
+	// JPA API
+	implementation group: 'org.postgresql', name:'postgresql', version: '42.7.3'
 }
 
 tasks.named('test') {
