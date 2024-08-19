@@ -1,6 +1,7 @@
-package com.greking.Greking.domain;
+package com.greking.Greking.User.domain;
 
 
+import com.greking.Greking.Survey.domain.FitnessLevel;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -21,14 +22,13 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long userid;
 
     @Email
     @Size(max = 25)
     @NotBlank
     private String email;
 
-    @Size(min = 8, max = 20)
     @NotBlank
     private String password;
 
@@ -40,8 +40,10 @@ public class User {
     private boolean termsOfServiceAccepted; //개인정보 활용동의
     private boolean privacyPolicyAccepted; //서비스 이용약관 동의
 
+    @Embedded
+    private Grade grade = new Grade(); //Grade필드를 포함시킴
 
-    private int level = 1; //레벨
-    private int experience = 0; //숙련도
+    @Enumerated(EnumType.STRING)
+    private FitnessLevel fitnessLevel; //피트니스 레벨
 
 }
