@@ -17,8 +17,6 @@ public class MountainDto {
     private Long id;
     private String name;
     private List<Course> course;
-    private List<RestaurantDto> restaurant;
-    private List<WeatherDto> weather;
 
 
 }

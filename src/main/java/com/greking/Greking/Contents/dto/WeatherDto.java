@@ -12,5 +12,4 @@ public class WeatherDto {
     private Mountain mountain;
 
 
-
 }

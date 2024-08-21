@@ -1,8 +1,7 @@
 package com.greking.Greking.Contents.domain;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -10,6 +9,10 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "mountain_entity")
 public class Mountain {
 
     @Id
@@ -17,15 +20,7 @@ public class Mountain {
     private Long id;
     private String name;
 
-    @OneToMany(mappedBy = "mountain")
+    @OneToMany(mappedBy = "mountain", cascade = CascadeType.ALL)
     private List<Course> course;
-
-    @OneToMany(mappedBy = "mountain")
-    private List<Restaurant> restaurants;
-
-    @OneToMany(mappedBy = "mountain")
-    private List<Weather> weather;
-
-
 
 }

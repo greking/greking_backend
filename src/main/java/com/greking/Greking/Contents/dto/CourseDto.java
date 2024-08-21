@@ -16,7 +16,7 @@ public class CourseDto {
     private String difficulty;
     private int duration;
     private int altitude;
-    private String direction;
+    private String direction; //찾아오는길
 
     private List<RestaurantDto> restaurant;
     private List<WeatherDto> weather;
