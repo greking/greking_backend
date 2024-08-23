@@ -12,13 +12,19 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "mountain_entity")
+@Table(name = "mountain")
 public class Mountain {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
+
+    @Column(nullable = false, columnDefinition = "float default 0.0")
+    private double longitude = 0.0;
+
+    @Column(nullable = false, columnDefinition = "float default 0.0")
+    private double latitude = 0.0;
 
     @OneToMany(mappedBy = "mountain", cascade = CascadeType.ALL)
     private List<Course> course;

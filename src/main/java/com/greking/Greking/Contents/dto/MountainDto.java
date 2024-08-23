@@ -2,8 +2,6 @@ package com.greking.Greking.Contents.dto;
 
 
 import com.greking.Greking.Contents.domain.Course;
-import com.greking.Greking.Contents.domain.Restaurant;
-import com.greking.Greking.Contents.domain.Weather;
 import lombok.*;
 
 import java.util.List;
@@ -16,6 +14,10 @@ public class MountainDto {
 
     private Long id;
     private String name;
+
+    private double latitude;  // 위도
+    private double longitude; // 경도
+
     private List<Course> course;
 
 

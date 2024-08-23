@@ -16,12 +16,11 @@ import java.util.Optional;
 public class MountainServiceImpl implements MountainService{
 
     private final MountainRepository mountainRepository;
-    private final CourseService courseService;
+
 
     @Autowired
-    public MountainServiceImpl(MountainRepository mountainRepository, CourseService courseService){
+    public MountainServiceImpl(MountainRepository mountainRepository){
         this.mountainRepository = mountainRepository;
-        this.courseService = courseService;
     }
 
 
@@ -45,6 +44,8 @@ public class MountainServiceImpl implements MountainService{
         return MountainDto.builder()
                 .id(mountain.getId())
                 .name(mountain.getName())
+                .latitude(mountain.getLatitude())
+                .longitude(mountain.getLongitude())
                 .course(mountain.getCourse())
                 .build();
     }

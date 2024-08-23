@@ -15,8 +15,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/mountains")
 public class MountainController {
 
-    @Autowired
-    private MountainService mountainService;
+    private final MountainService mountainService;
 
     @Autowired
     public MountainController(MountainService mountainService){
@@ -40,6 +39,8 @@ public class MountainController {
                     .map(mountain -> MountainDto.builder()
                             .id(mountain.getId())
                             .name(mountain.getName())
+                            .latitude(mountain.getLatitude())
+                            .longitude(mountain.getLongitude())
                             .course(mountain.getCourse())
                             .build())
                     .collect(Collectors.toList());

@@ -1,5 +1,6 @@
 package com.greking.Greking.Contents.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.greking.Greking.Contents.domain.Course;
 import com.greking.Greking.Contents.dto.CourseDto;
 
@@ -17,9 +18,9 @@ public interface CourseService {
     List<Course> getAllCourses();
 
     //비공개 api
-    Course saveCourse(Course course);
-    Course updateCourse(Long id);
+    void addAllCourses() throws JsonProcessingException;
+    Course saveCourse(Course course) throws JsonProcessingException;
+    Course updateCourse(Long id) throws JsonProcessingException;
     void deleteCourse(Long id);
-
 
 }
