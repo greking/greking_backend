@@ -44,20 +44,4 @@ public class Course {
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private List<Weather> weathers;
 
-    // Course 생성 시 산 이름을 설정하는 빌더 메서드
-    public static Course createCourse(Mountain mountain, String courseName, String information, String difficulty,
-                                      int distance, int duration, int altitude, int ascendTime, int descendTime, String direction) {
-        return Course.builder()
-                .mountain(mountain)
-                .mountainName(mountain.getName()) // 산 이름을 설정
-                .courseName(courseName)
-                .information(information)
-                .difficulty(difficulty)
-                .distance(distance)
-                .duration(duration)
-                .altitude(altitude)
-                .direction(direction)
-                .build();
-    }
-
 }

@@ -39,8 +39,11 @@ public class MountainController {
                     .map(mountain -> MountainDto.builder()
                             .id(mountain.getId())
                             .name(mountain.getName())
+                            .addressState(mountain.getAddressState())
                             .latitude(mountain.getLatitude())
                             .longitude(mountain.getLongitude())
+                            .cityCode(mountain.getCityCode())
+                            .westEastCode(mountain.getWestEastCode())
                             .course(mountain.getCourse())
                             .build())
                     .collect(Collectors.toList());

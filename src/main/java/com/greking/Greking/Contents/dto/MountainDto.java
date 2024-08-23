@@ -14,9 +14,13 @@ public class MountainDto {
 
     private Long id;
     private String name;
+    private String addressState; //대표도시
 
     private double latitude;  // 위도
     private double longitude; // 경도
+
+    private String cityCode; //도시코드
+    private String westEastCode; //영서 / 영동지방
 
     private List<Course> course;
 
