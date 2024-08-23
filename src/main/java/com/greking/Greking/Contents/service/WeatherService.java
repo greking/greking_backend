@@ -1,16 +1,12 @@
 package com.greking.Greking.Contents.service;
 
-import com.greking.Greking.Contents.domain.Course;
 import com.greking.Greking.Contents.domain.Weather;
-
-import java.util.List;
 
 public interface WeatherService {
 
-    //날씨 정보 api로부터 가져오기
-    //날씨 정보 코스정보에게 전달하기
-    //날씨 정보 저장하기
+    // 기상청 API로부터 날씨 정보를 가져와 DB에 저장하는 메서드
+    void fetchAndSaveWeatherData(String mountainAddress);
 
-    public List<Weather> fetchWeatherDataForCourse(Course course);
-    public List<Weather> getWeatherForCourse(Course course);
+    // 클라이언트 측에서 요청 시 DB에서 날씨 정보를 조회하는 메서드
+    Weather getWeatherForecast(String mountainAddress);
 }

@@ -28,9 +28,8 @@ public class Mountain {
     @Column(nullable = false, columnDefinition = "float default 0.0")
     private double latitude = 0.0;
 
-    private String cityCode;
-
-    private String westEastCode;
+    private String cityCode; //온도 가져오기 (기온)
+    private String westEastCode; //강수확률, 날씨상태, 날짜 가져오기
 
 
     @OneToMany(mappedBy = "mountain", cascade = CascadeType.ALL)

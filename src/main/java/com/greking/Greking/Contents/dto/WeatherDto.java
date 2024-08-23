@@ -14,8 +14,8 @@ public class WeatherDto {
     private Long id;
     private Mountain mountain;
 
-    private String regId; //지역별 날씨상태, 강수확률가져오기
-    private String regId2; //지역별 온도 가져오기
+    private String westEastCode; //지역별 날씨상태, 강수확률가져오기
+    private String cityCode; //지역별 온도 가져오기
 
     private LocalDate forecastDate;
     private String condition; //날씨 상태 (맑음, 흐림)

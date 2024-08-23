@@ -131,24 +131,12 @@ public class CourseServiceImpl implements CourseService {
         return savedCourse;
     }
 
+    //구현 필요
     @Override
     @Transactional
     public Course updateCourse(Long id) throws JsonProcessingException {
-        logger.info("Updating course with ID: {}", id);
 
-        Course existingCourse = courseRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("course not found"));
-
-        List<Weather> updatedWeathers = weatherService.getWeatherForCourse(existingCourse);
-        existingCourse.setWeathers(updatedWeathers);
-
-        List<Restaurant> updatedRestaurants = restaurantService.getRestaurantForCourse(existingCourse);
-        existingCourse.setRestaurants(updatedRestaurants);
-
-        Course updatedCourse = courseRepository.save(existingCourse);
-        logger.info("Course updated with new weather and restaurant data");
-
-        return updatedCourse;
+        return null;
     }
 
     @Override
