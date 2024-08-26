@@ -2,6 +2,7 @@ package com.greking.Greking.User.controller;
 
 import com.greking.Greking.User.domain.PasswordResetToken;
 import com.greking.Greking.User.domain.User;
+import com.greking.Greking.User.service.PasswordResetService;
 import com.greking.Greking.User.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    private PasswordResetService passwordResetService;
+
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody User user, BindingResult result) {
@@ -41,7 +44,7 @@ public class UserController {
     public ResponseEntity<?> createPasswordResetToken(@RequestBody Map<String, String> request) {
         String email = request.get("email");
         try {
-            PasswordResetToken savedToken = userService.createPasswordResetToken(email);
+            PasswordResetToken savedToken = passwordResetService.createPasswordResetToken(email);
             return new ResponseEntity<>(savedToken, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -53,7 +56,7 @@ public class UserController {
     public ResponseEntity<?> passwordResetRequest(@RequestBody Map<String, String> request) {
         String email = request.get("email");
         try {
-            userService.createPasswordResetToken(email);
+            passwordResetService.createPasswordResetToken(email);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -63,7 +66,7 @@ public class UserController {
     @PostMapping("/validate-reset-token")
     public ResponseEntity<?> validateResetToken(@RequestBody Map<String, String> request) {
         String token = request.get("token");
-        boolean isValid = userService.validatePasswordResetToken(token);
+        boolean isValid = passwordResetService.validatePasswordResetToken(token);
         if (isValid) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
@@ -76,7 +79,7 @@ public class UserController {
         try {
             String token = request.get("token");
             String newPassword = request.get("newPassword");
-            userService.resetPassword(token, newPassword);
+            passwordResetService.resetPassword(token, newPassword);
             Map<String, String> response = new HashMap<>();
             response.put("message", "Password reset successful");
             return new ResponseEntity<>(response, HttpStatus.OK);

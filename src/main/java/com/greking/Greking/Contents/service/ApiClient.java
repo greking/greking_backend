@@ -61,14 +61,15 @@ public class ApiClient {
         }
     }
 
-    // 중기전망조회: 날짜, 날씨상태, 강수확률
-    public String fetchWeatherData(String mountainName, String addressState, String regId2) {
+    // 중기육상예보조회: 날짜, 날씨상태, 강수확률
+    public String fetchWeatherData(String regId2) {
         String serviceKey = "DASXubxpgDMIa5rK0gegg8C8RA8J5qTojKbD1JyujPBeWWSwRLDCY1jt7lgcXlyKnd37RWdyfZ6bQAjcdJtM4g==";
         String tmFc = getTmFc(); // 발표시각을 가져오는 메서드, 예: 202308240600
 
         String url = String.format(
-                "http://apis.data.go.kr/1360000/MidFcstInfoService/getMidFcst?serviceKey=%s&pageNo=1&numOfRows=10&dataType=JSON&regId=%s&tmFc=%s",
+                "http://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst?serviceKey=%s&pageNo=1&numOfRows=10&dataType=JSON&regId=%s&tmFc=%s",
                 serviceKey, regId2, tmFc);
+
 
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 
@@ -89,6 +90,7 @@ public class ApiClient {
                 "http://apis.data.go.kr/1360000/MidFcstInfoService/getMidTa?serviceKey=%s&pageNo=1&numOfRows=10&dataType=JSON&regId=%s&tmFc=%s",
                 serviceKey, regId1, tmFc);
 
+
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 
         if (response.getStatusCode().is2xxSuccessful()) {
@@ -99,21 +101,33 @@ public class ApiClient {
     }
 
 
-
-
-
     // 발표시각 (tmFc) 가져오는 메서드
     private String getTmFc() {
-        // 현재 시간을 가져와서 06:00 또는 18:00으로 설정
         LocalDateTime now = LocalDateTime.now();
-        if (now.getHour() >= 18) {
-            return now.withHour(18).withMinute(0).withSecond(0).withNano(0)
+
+        if (now.getHour() < 6) {
+            // 현재 시간이 00시부터 05시 59분까지인 경우, 전날 18시로 설정
+            return now.minusDays(1).withHour(18).withMinute(0).withSecond(0).withNano(0)
                     .format(DateTimeFormatter.ofPattern("yyyyMMddHHmm"));
         } else {
+            // 나머지 경우, 오늘 06시로 설정
             return now.withHour(6).withMinute(0).withSecond(0).withNano(0)
                     .format(DateTimeFormatter.ofPattern("yyyyMMddHHmm"));
         }
     }
 
+    public String fetchRestaurantInfo(double longitude, double latitude) {
+        String serviceKey = "DASXubxpgDMIa5rK0gegg8C8RA8J5qTojKbD1JyujPBeWWSwRLDCY1jt7lgcXlyKnd37RWdyfZ6bQAjcdJtM4g==";
+        String url = String.format(
+                "https://apis.data.go.kr/B551011/KorService1/locationBasedList1?numOfRows=5&MobileOS=AND&MobileApp=MobileApp&mapX=%f&mapY=%f&radius=10000&contentTypeId=39&serviceKey=%s",
+                longitude, latitude, serviceKey);
 
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+
+        if (response.getStatusCode().is2xxSuccessful()) {
+            return response.getBody();
+        } else {
+            throw new RuntimeException("Failed to fetch restaurant data from the API");
+        }
+    }
 }

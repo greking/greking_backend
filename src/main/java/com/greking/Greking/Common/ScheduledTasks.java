@@ -3,7 +3,6 @@ package com.greking.Greking.Common;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.greking.Greking.Contents.domain.Course;
 import com.greking.Greking.Contents.service.CourseService;
-import com.greking.Greking.Contents.service.CourseServiceImpl;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +17,7 @@ public class ScheduledTasks {
         this.courseService = courseService;
     }
 
-    @Scheduled(cron = "0 0 2 * *?")
+    @Scheduled(cron = "0 0 6 * *?")
     public void updateWeatherAndRestauranData() throws JsonProcessingException{
         List<Course> allCourses = courseService.getAllCourses();
 

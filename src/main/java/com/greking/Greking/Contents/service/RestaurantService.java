@@ -1,15 +1,15 @@
 package com.greking.Greking.Contents.service;
 
-import com.greking.Greking.Contents.domain.Course;
 import com.greking.Greking.Contents.domain.Restaurant;
+import org.json.JSONException;
 
 import java.util.List;
 
 public interface RestaurantService {
+    // 외부 API에서 식당 데이터를 가져와 저장하는 메서드
+    void fetchAndSaveRestaurantData(Long mountainId) throws JSONException;
 
-    //식당정보 api로부터 가져오기
-    //식당정보 코스정보로 전달하기
+    // 특정 산 주변의 식당 목록을 조회하는 메서드
+    List<Restaurant> getRestaurantsByMountain(Long mountainId);
 
-    public List<Restaurant> fetchRestaurantDataForCourse(Course course);
-    public List<Restaurant> getRestaurantForCourse(Course course);
 }

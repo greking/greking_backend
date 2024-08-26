@@ -30,9 +30,9 @@ public class AppConfig {
     }
 
     @Bean
-    public UserService userService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder,
-                                   EmailService emailService, PasswordResetTokenRepository tokenRepository) {
-        return new UserServiceImpl(userRepository, passwordEncoder, emailService, tokenRepository);
+    public UserService userService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder
+                                   , PasswordResetTokenRepository tokenRepository) {
+        return new UserServiceImpl(userRepository, passwordEncoder,  tokenRepository);
     }
 
     @Bean

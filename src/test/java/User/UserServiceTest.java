@@ -5,6 +5,7 @@ import com.greking.Greking.User.domain.User;
 import com.greking.Greking.User.repository.PasswordResetTokenRepository;
 import com.greking.Greking.User.repository.UserRepository;
 import com.greking.Greking.User.service.EmailService;
+import com.greking.Greking.User.service.PasswordResetService;
 import com.greking.Greking.User.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,6 +21,7 @@ public class UserServiceTest {
 
     EmailService emailService;
     PasswordResetTokenRepository tokenRepository;
+    PasswordResetService passwordResetService;
     UserService userService;
     UserRepository userRepository;
     BCryptPasswordEncoder passwordEncoder;
@@ -30,10 +32,11 @@ public class UserServiceTest {
         userRepository = Mockito.mock(UserRepository.class);
         passwordEncoder = Mockito.mock(BCryptPasswordEncoder.class);
         emailService = Mockito.mock(EmailService.class);
+        passwordResetService = Mockito.mock(PasswordResetService.class);
         tokenRepository = Mockito.mock(PasswordResetTokenRepository.class);
 
         AppConfig appConfig = new AppConfig();
-        userService = appConfig.userService(userRepository, passwordEncoder, emailService, tokenRepository);
+        userService = appConfig.userService(userRepository, passwordEncoder, tokenRepository);
 
         user = new User();
         user.setEmail("test@example.com");
@@ -65,7 +68,7 @@ public class UserServiceTest {
         when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
 
         // when
-        User foundUser = userService.findUserByEmail(user.getEmail());
+        User foundUser = passwordResetService.findUserByEmail(user.getEmail());
 
         // then
         assertThat(foundUser).isNotNull();

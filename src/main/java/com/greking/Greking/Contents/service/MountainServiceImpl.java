@@ -17,12 +17,10 @@ public class MountainServiceImpl implements MountainService{
 
     private final MountainRepository mountainRepository;
 
-
     @Autowired
     public MountainServiceImpl(MountainRepository mountainRepository){
         this.mountainRepository = mountainRepository;
     }
-
 
 
     @Override
