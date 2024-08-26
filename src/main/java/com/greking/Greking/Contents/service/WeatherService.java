@@ -1,7 +1,10 @@
 package com.greking.Greking.Contents.service;
 
 import com.greking.Greking.Contents.domain.Weather;
+import com.greking.Greking.Contents.dto.WeatherDto;
 import org.json.JSONException;
+
+import java.util.List;
 
 public interface WeatherService {
 
@@ -9,7 +12,7 @@ public interface WeatherService {
     void saveWeatherData(Long mountainId) throws JSONException;
 
     // 클라이언트 측에서 요청 시 DB에서 날씨 정보를 조회하는 메서드
-    Weather getWeatherForecast(Long mountainId);
+    WeatherDto getWeatherForecast(Long mountainId);
 
     //db에 있는 모든 산에 대해 날씨정보 업데이트하는 메서드
     void saveAllWeatherData();

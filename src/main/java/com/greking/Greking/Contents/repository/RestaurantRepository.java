@@ -10,5 +10,11 @@ import java.util.List;
 @Repository
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
 
-    List<Restaurant> findByMountain(Mountain mountain);
+
+
+    boolean existsByMountainAndNameAndAddress(Mountain mountain, String name, String address);
+    long countByMountainId(Long mountainId);
+
+
+    List<Restaurant> findByMountainId(Long mountainId);
 }

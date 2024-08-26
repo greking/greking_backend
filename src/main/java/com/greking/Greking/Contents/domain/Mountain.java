@@ -1,5 +1,6 @@
 package com.greking.Greking.Contents.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,9 +23,11 @@ public class Mountain {
 
     private String addressState;
 
+    //경도
     @Column(nullable = false, columnDefinition = "float default 0.0")
     private double longitude = 0.0;
 
+    //위도
     @Column(nullable = false, columnDefinition = "float default 0.0")
     private double latitude = 0.0;
 
@@ -33,6 +36,10 @@ public class Mountain {
 
 
     @OneToMany(mappedBy = "mountain", cascade = CascadeType.ALL)
+    @JsonManagedReference  // 부모 쪽에 추가
     private List<Course> course;
+
+    @OneToMany(mappedBy = "mountain", cascade = CascadeType.ALL)
+    private List<Restaurant> restaurants;
 
 }

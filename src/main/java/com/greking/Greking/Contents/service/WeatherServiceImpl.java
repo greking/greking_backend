@@ -2,6 +2,7 @@ package com.greking.Greking.Contents.service;
 
 import com.greking.Greking.Contents.domain.Mountain;
 import com.greking.Greking.Contents.domain.Weather;
+import com.greking.Greking.Contents.dto.WeatherDto;
 import com.greking.Greking.Contents.repository.MountainRepository;
 import com.greking.Greking.Contents.repository.WeatherRepository;
 import org.json.JSONArray;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -37,7 +37,7 @@ public class WeatherServiceImpl implements WeatherService {
         String forecastData = apiClient.fetchWeatherData(mountain.getWestEastCode());
 
         // 중기기온조회 API 호출
-        String temperatureData = apiClient.fetchWeatherTemp(mountain.getName(), mountain.getAddressState(), mountain.getCityCode());
+        String temperatureData = apiClient.fetchWeatherTemp(mountain.getCityCode());
 
         // 데이터 파싱 및 Weather 객체에 매핑
         Weather weather = parseWeatherData(forecastData, temperatureData);
@@ -61,16 +61,45 @@ public class WeatherServiceImpl implements WeatherService {
     }
 
     @Override
-    public Weather getWeatherForecast(Long mountainId) {
+    public WeatherDto getWeatherForecast(Long mountainId) {
         // 산의 id를 기반으로 DB에서 산을 조회
         Mountain mountain = mountainRepository.findById(mountainId)
                 .orElseThrow(() -> new RuntimeException("해당 ID의 산을 찾을 수 없습니다."));
 
-        // 산의 cityCode로 날씨 정보 조회
-        return weatherRepository.findByCityCode(mountain.getCityCode())
-                .orElseThrow(() -> new RuntimeException("해당 지역의 날씨 정보를 찾을 수 없습니다."));
+        Weather weather = weatherRepository.findByMountain(mountain);
+        return convertToDto(weather);
     }
 
+    private WeatherDto convertToDto(Weather weather) {
+        return WeatherDto.builder()
+                .id(weather.getId())
+                .mountainName(weather.getMountainName())
+                .addressState(weather.getAddressState())
+                .tmFc(weather.getTmFc())
+                .westEastCode(weather.getWestEastCode())
+                .cityCode(weather.getCityCode())
+                .forecastDate3(weather.getForecastDate3())
+                .condition3(weather.getCondition3())
+                .temperature3(weather.getTemperature3())
+                .predictRain3(weather.getPredictRain3())
+                .forecastDate4(weather.getForecastDate4())
+                .condition4(weather.getCondition4())
+                .temperature4(weather.getTemperature4())
+                .predictRain4(weather.getPredictRain4())
+                .forecastDate5(weather.getForecastDate5())
+                .condition5(weather.getCondition5())
+                .temperature5(weather.getTemperature5())
+                .predictRain5(weather.getPredictRain5())
+                .forecastDate6(weather.getForecastDate6())
+                .condition6(weather.getCondition6())
+                .temperature6(weather.getTemperature6())
+                .predictRain6(weather.getPredictRain6())
+                .forecastDate7(weather.getForecastDate7())
+                .condition7(weather.getCondition7())
+                .temperature7(weather.getTemperature7())
+                .predictRain7(weather.getPredictRain7())
+                .build();
+    }
 
     @Override
     public void saveAllWeatherData() {
@@ -88,7 +117,7 @@ public class WeatherServiceImpl implements WeatherService {
     }
 
     // JSON 파싱 메서드
-    private Weather parseWeatherData(String forecastData, String temperatureData) throws JSONException {
+    private Weather parseWeatherData(String forecastData, String temperatureData) {
         Weather weather = new Weather();
         try{
             // 중기전망 데이터 파싱 (날씨 상태, 강수확률)

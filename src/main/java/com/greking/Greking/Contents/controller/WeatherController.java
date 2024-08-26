@@ -1,11 +1,13 @@
 package com.greking.Greking.Contents.controller;
 
-import com.greking.Greking.Contents.domain.Weather;
+
+import com.greking.Greking.Contents.dto.WeatherDto;
 import com.greking.Greking.Contents.service.WeatherService;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequestMapping("/api/weather")
@@ -24,13 +26,18 @@ public class WeatherController {
      * @param mountainId 산의 id값
      * @return 해당 산의 날씨 정보
      */
-    @GetMapping("/forecast")
-    public ResponseEntity<Weather> getWeatherForecast(@RequestParam Long mountainId) {
-        Weather weather = weatherService.getWeatherForecast(mountainId);
-        return ResponseEntity.ok(weather);
+    @GetMapping("/getInfo")
+    public ResponseEntity<WeatherDto> getWeatherForecast(@RequestParam(name = "mountainId") Long mountainId) {
+        try {
+            WeatherDto weather = weatherService.getWeatherForecast(mountainId);
+            return ResponseEntity.ok(weather); // 데이터가 있을 경우 200 응답과 함께 데이터 반환
+        } catch (Exception e) {
+            System.out.println("Error occurred while fetching weather: " + e.getMessage());
+            return ResponseEntity.status(404).body(null); // 예외가 발생하면 404 응답
+        }
     }
 
-    @PostMapping("/fetch-and-save")
+    @PostMapping("/fetch/{mountainId}")
     public ResponseEntity<String> fetchAndSaveWeatherData(@RequestParam Long mountainId) {
         try {
             weatherService.saveWeatherData(mountainId);

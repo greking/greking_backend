@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CourseServiceImpl implements CourseService {
@@ -47,9 +48,11 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<Course> getAllCourses() {
-        logger.info("Fetching all courses");
-        return courseRepository.findAll();
+    public List<CourseDto> getAllCourses() {
+        List<Course> courses = courseRepository.findAll();
+        return courses.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
     }
 
     private CourseDto convertToDto(Course course) {

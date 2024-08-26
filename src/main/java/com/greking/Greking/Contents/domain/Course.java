@@ -1,5 +1,7 @@
 package com.greking.Greking.Contents.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,6 +23,8 @@ public class Course {
     //mountain FK
     @ManyToOne
     @JoinColumn(name = "mountain_id") //외래키 칼럼이름 지정
+    @JsonIgnore  // 이 필드를 직렬화에서 제외
+    @JsonBackReference  // 자식 쪽에 추가
     private Mountain mountain;
 
     private String mountainName; //산이름

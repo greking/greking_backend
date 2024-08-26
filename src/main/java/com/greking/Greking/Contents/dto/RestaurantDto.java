@@ -15,7 +15,9 @@ public class RestaurantDto {
     private String tel;
     private String address;
 
-    private int mapX;
-    private int mapY;
-    private List<String> imageUrls;
+    private double mapX;
+    private double mapY;
+
+    private String imageUrl1;
+    private String imageUrl2;
 }

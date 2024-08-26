@@ -1,6 +1,7 @@
 package com.greking.Greking.Contents.controller;
 
 import com.greking.Greking.Contents.domain.Course;
+import com.greking.Greking.Contents.dto.CourseDto;
 import com.greking.Greking.Contents.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,23 +24,25 @@ public class CourseController {
         this.courseService = courseService;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getCourseById(@PathVariable Long id){
+    @GetMapping("/getInfo")
+    public ResponseEntity<CourseDto> getCourseById(@RequestParam(name="id") Long id){
         try{
-            courseService.getCourseById(id);
+            CourseDto course = courseService.getCourseById(id);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            System.out.println("Error occurred while fetching course: " + e.getMessage());
+            return ResponseEntity.status(404).body(null); // 예외가 발생하면 404 응답
         }
     }
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAllCourses(){
+    public ResponseEntity<List<CourseDto>> getAllCourses(){
         try{
-            List<Course> courses = courseService.getAllCourses();
+            List<CourseDto> courses = courseService.getAllCourses();
             return new ResponseEntity<>(courses, HttpStatus.OK);
         } catch (Exception e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            System.out.println("Error occurred while fetching courses: " + e.getMessage());
+            return ResponseEntity.status(404).body(null); // 예외가 발생하면 404 응답
         }
     }
 

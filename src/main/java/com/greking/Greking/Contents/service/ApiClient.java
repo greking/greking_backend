@@ -82,7 +82,7 @@ public class ApiClient {
 
 
     // 중기기온조회: 기온 데이터 가져오기
-    public String fetchWeatherTemp(String mountainName, String addressState, String regId1) {
+    public String fetchWeatherTemp(String regId1) {
         String serviceKey = "DASXubxpgDMIa5rK0gegg8C8RA8J5qTojKbD1JyujPBeWWSwRLDCY1jt7lgcXlyKnd37RWdyfZ6bQAjcdJtM4g==";
         String tmFc = getTmFc(); // 발표시각을 가져오는 메서드, 예: 202308240600
 
@@ -116,13 +116,16 @@ public class ApiClient {
         }
     }
 
+
+    //식당정보 가져오는 메서드
     public String fetchRestaurantInfo(double longitude, double latitude) {
         String serviceKey = "DASXubxpgDMIa5rK0gegg8C8RA8J5qTojKbD1JyujPBeWWSwRLDCY1jt7lgcXlyKnd37RWdyfZ6bQAjcdJtM4g==";
         String url = String.format(
-                "https://apis.data.go.kr/B551011/KorService1/locationBasedList1?numOfRows=5&MobileOS=AND&MobileApp=MobileApp&mapX=%f&mapY=%f&radius=10000&contentTypeId=39&serviceKey=%s",
+                "https://apis.data.go.kr/B551011/KorService1/locationBasedList1?numOfRows=5&MobileOS=AND&MobileApp=MobileApp&_type=json&mapX=%f&mapY=%f&radius=10000&contentTypeId=39&serviceKey=%s",
                 longitude, latitude, serviceKey);
 
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+
 
         if (response.getStatusCode().is2xxSuccessful()) {
             return response.getBody();
