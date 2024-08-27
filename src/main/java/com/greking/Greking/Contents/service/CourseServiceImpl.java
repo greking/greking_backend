@@ -8,7 +8,9 @@ import com.greking.Greking.Contents.domain.Mountain;
 import com.greking.Greking.Contents.domain.Restaurant;
 import com.greking.Greking.Contents.domain.Weather;
 import com.greking.Greking.Contents.dto.CourseDto;
+import com.greking.Greking.Contents.dto.MountainDto;
 import com.greking.Greking.Contents.repository.CourseRepository;
+import com.greking.Greking.Contents.repository.MountainRepository;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,25 +27,26 @@ public class CourseServiceImpl implements CourseService {
     private static final Logger logger = LoggerFactory.getLogger(CourseServiceImpl.class);
 
     private final CourseRepository courseRepository;
+    private final MountainRepository mountainRepository;
     private final ApiClient apiClient;
-
     private final MountainService mountainService;
-    private final RestaurantService restaurantService;
-    private final WeatherService weatherService;
 
-    public CourseServiceImpl(CourseRepository courseRepository, ApiClient apiClient, @Lazy MountainService mountainService, RestaurantService restaurantService, WeatherService weatherService) {
+
+    public CourseServiceImpl(CourseRepository courseRepository, MountainRepository mountainRepository, ApiClient apiClient, MountainService mountainService) {
         this.courseRepository = courseRepository;
-        this.mountainService = mountainService;
+        this.mountainRepository = mountainRepository;
         this.apiClient = apiClient;
-        this.restaurantService = restaurantService;
-        this.weatherService = weatherService;
+        this.mountainService = mountainService;
     }
 
     @Override
-    public CourseDto getCourseById(Long id) {
-        logger.info("Fetching course by ID: {}", id);
-        Course course = courseRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("course not found"));
+    public CourseDto getCourseById(Long mountainId) {
+        logger.info("Fetching course by ID: {}", mountainId);
+
+        Mountain mountain = mountainRepository.findById(mountainId)
+                .orElseThrow(() -> new RuntimeException("해당 ID의 산을 찾을수 없습니다"));
+
+        Course course = courseRepository.findByMountain(mountain);
         return convertToDto(course);
     }
 

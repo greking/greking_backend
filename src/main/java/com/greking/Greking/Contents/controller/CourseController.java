@@ -25,15 +25,16 @@ public class CourseController {
     }
 
     @GetMapping("/getInfo")
-    public ResponseEntity<CourseDto> getCourseById(@RequestParam(name="id") Long id){
+    public ResponseEntity<CourseDto> getCourseById(@RequestParam(name="mountainId") Long mountainId){
         try{
-            CourseDto course = courseService.getCourseById(id);
-            return new ResponseEntity<>(HttpStatus.OK);
+            CourseDto course = courseService.getCourseById(mountainId);
+            return ResponseEntity.ok(course);
         } catch (Exception e){
             System.out.println("Error occurred while fetching course: " + e.getMessage());
             return ResponseEntity.status(404).body(null); // 예외가 발생하면 404 응답
         }
     }
+
 
     @GetMapping("/all")
     public ResponseEntity<List<CourseDto>> getAllCourses(){

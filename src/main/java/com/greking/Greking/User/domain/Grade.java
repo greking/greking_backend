@@ -11,4 +11,5 @@ public class Grade {
     private int level = 1; //레벨
     private int experience = 0; //숙련도
 
+
 }

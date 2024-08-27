@@ -23,6 +23,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers("/api/weather/**").permitAll()
                         .requestMatchers("/api/restaurant/**").permitAll()
+                        .requestMatchers("/api/courses/all").permitAll()
+                        .requestMatchers("/api/courses/getInfo").permitAll()
+                        .requestMatchers("/api/courses/addAll").permitAll()
                 )
                 .anonymous(withDefaults()) // 익명 사용자 허용
                 .formLogin(AbstractAuthenticationFilterConfigurer::permitAll) // 로그인 폼 접근 허용
