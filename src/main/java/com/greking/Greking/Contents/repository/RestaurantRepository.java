@@ -13,6 +13,5 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
 
     boolean existsByMountainAndNameAndAddress(Mountain mountain, String name, String address);
     long countByMountainId(Long mountainId);
-
     List<Restaurant> findByMountainId(Long mountainId);
 }

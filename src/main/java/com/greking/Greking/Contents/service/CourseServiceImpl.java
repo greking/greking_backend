@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 @Service
 public class CourseServiceImpl implements CourseService {
 
-    private static final Logger logger = LoggerFactory.getLogger(CourseServiceImpl.class);
 
     private final CourseRepository courseRepository;
     private final MountainRepository mountainRepository;
@@ -41,7 +40,6 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public CourseDto getCourseById(Long mountainId) {
-        logger.info("Fetching course by ID: {}", mountainId);
 
         Mountain mountain = mountainRepository.findById(mountainId)
                 .orElseThrow(() -> new RuntimeException("해당 ID의 산을 찾을수 없습니다"));
@@ -63,10 +61,13 @@ public class CourseServiceImpl implements CourseService {
                 .id(course.getId())
                 .courseName(course.getCourseName())
                 .information(course.getInformation())
+                .course_info(course.getCourse_info())
                 .difficulty(course.getDifficulty())
                 .distance(course.getDistance())
                 .duration(course.getDuration())
                 .altitude(course.getAltitude())
+                .longitude(course.getLongitude())
+                .latitude(course.getLatitude())
                 .direction(course.getDirection())
                 .build();
     }
@@ -74,16 +75,13 @@ public class CourseServiceImpl implements CourseService {
     @Override
     @Transactional
     public void addAllCourses() throws JsonProcessingException {
-        logger.info("Starting to add all courses");
         List<Mountain> allMountains = mountainService.getAllMountains();
 
         for (Mountain mountain : allMountains) {
-            logger.info("Processing mountain: {}", mountain.getName());
             Course course = new Course();
             course.setMountain(mountain);
             saveCourse(course);
         }
-        logger.info("Finished adding all courses");
     }
 
     @Override
@@ -94,11 +92,8 @@ public class CourseServiceImpl implements CourseService {
         double latitude = mountain.getLatitude();
         double longitude = mountain.getLongitude();
 
-        logger.info("Saving course for mountain: {} (lat: {}, lon: {})", mountainName, latitude, longitude);
 
-        // 공공데이터 API에서 산 정보를 가져옴 => 다시작업
         String responseData = apiClient.fetchMountainData(mountainName, latitude, longitude);
-        logger.debug("API response data: {}", responseData);
 
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode root = objectMapper.readTree(responseData);
@@ -107,10 +102,8 @@ public class CourseServiceImpl implements CourseService {
 
         String courseName = resultNode.path("courseName").asText();
         String difficulty = resultNode.path("difficulty").asText();
-        int distance = resultNode.path("distance").asInt();
+        String distance = resultNode.path("distance").asText();
 
-        logger.info("Parsed course data - Name: {}, Difficulty: {}, Distance: {}",
-                courseName, difficulty, distance);
 
         course.setCourseName(courseName);
         course.setDifficulty(difficulty);
@@ -119,25 +112,23 @@ public class CourseServiceImpl implements CourseService {
 
         // 2번째 정보 가져오기
         String directionData = apiClient.fetchInfoDirectionData(mountainName);
-        logger.debug("Direction API response data: {}", directionData);
 
         JsonNode directionRoot = objectMapper.readTree(directionData);
         String direction = directionRoot.path("response").path("body").path("items").path("item").path("pbtrninfodscrt").asText();
         String information = directionRoot.path("response").path("body").path("items").path("item").path("mntninfodscrt").asText();
-
-        logger.info("Parsed direction data - Direction: {}, Information: {}", direction, information);
+        String altitude = directionRoot.path("response").path("body").path("items").path("item").path("mntninfohght").asText();
 
         course.setDirection(direction);
         course.setInformation(information);
+        course.setAltitude(altitude);
 
         // Course를 저장
         Course savedCourse = courseRepository.save(course);
-        logger.info("Course saved with ID: {}", savedCourse.getId());
 
         return savedCourse;
     }
 
-    //구현 필요
+    //next version
     @Override
     @Transactional
     public Course updateCourse(Long id) throws JsonProcessingException {
@@ -147,12 +138,10 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public void deleteCourse(Long id) {
-        logger.info("Deleting course with ID: {}", id);
 
         Optional<Course> courseOptional = courseRepository.findById(id);
         if (courseOptional.isPresent()) {
             courseRepository.deleteById(id);
-            logger.info("Course deleted");
         } else {
             throw new IllegalArgumentException("course not found");
         }

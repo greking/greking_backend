@@ -33,10 +33,10 @@ public class RestaurantServiceImpl implements RestaurantService {
         Mountain mountain = mountainRepository.findById(mountainId)
                 .orElseThrow(() -> new RuntimeException("해당 산을 찾을 수 없습니다."));
 
-        // 이미 등록된 식당의 수를 확인
+        // 이미 등록된 식당의 수를 확인 (최대 10개)
         long restaurantCount = restaurantRepository.countByMountainId(mountainId);
-        if (restaurantCount >= 5) {
-            System.out.println("이미 최대 5개의 식당이 등록되어 있습니다.");
+        if (restaurantCount >= 10) {
+            System.out.println("이미 최대 10개의 식당이 등록되어 있습니다.");
             return;
         }
 
@@ -46,10 +46,10 @@ public class RestaurantServiceImpl implements RestaurantService {
         // 데이터 파싱 및 Restaurant 객체에 매핑
         List<Restaurant> restaurants = parseRestaurantData(restaurantData, mountain);
 
-        // 중복되지 않은 최대 5개의 식당만 저장
+        // 중복되지 않은 최대 10개의 식당만 저장
         for (Restaurant restaurant : restaurants) {
-            if (restaurantCount >= 5) {
-                break; // 이미 5개가 저장되었다면 추가하지 않음
+            if (restaurantCount >= 10) {
+                break; // 이미 10개가 저장되었다면 추가하지 않음
             }
 
             // 중복 체크: 이름과 주소로 식별
@@ -112,9 +112,9 @@ public class RestaurantServiceImpl implements RestaurantService {
                 restaurant.setMountain(mountain);
                 restaurant.setName(InfoItem.getString("title"));
                 restaurant.setAddress(InfoItem.getString("addr1"));
-                restaurant.setTel(InfoItem.getString("tel"));
-                restaurant.setImageUrl1(InfoItem.optString("firstimage", null));
-                restaurant.setImageUrl2(InfoItem.optString("firstimage2", null));
+                restaurant.setTel(InfoItem.optString("tel", "None"));
+                restaurant.setImageUrl1(InfoItem.optString("firstimage", "None"));
+                restaurant.setImageUrl2(InfoItem.optString("firstimage2", "None"));
 
                 restaurantList.add(restaurant);
             }

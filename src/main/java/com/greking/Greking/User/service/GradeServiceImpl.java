@@ -1,18 +1,35 @@
 package com.greking.Greking.User.service;
 
 
-import com.greking.Greking.User.repository.UserRepository;
+import com.greking.Greking.User.domain.Grade;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class GradeServiceImpl {
+public class GradeServiceImpl implements GradeService {
 
-    private final UserRepository userRepository;
 
-    public GradeServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    @Override
+    @Transactional
+    public void addExperience(Grade grade, int difficulty){
+
+        int experienceGained = Grade.DIFFICULTY_EXPERIENCE_MAP.getOrDefault(difficulty, 0);
+        grade.setExperience(grade.getExperience() + experienceGained);
+
+        while (grade.getExperience() >= Grade.LEVEL_UP_THRESHOLD){
+            levelUp(grade);
+        }
     }
 
+    //레벨업 메서드
+    private void levelUp(Grade grade){
+        //최대 레벨 5로 가정
+        if(grade.getLevel() < 5){
+            grade.setLevel(grade.getLevel() + 1);
+            grade.setExperience(grade.getExperience() - Grade.LEVEL_UP_THRESHOLD);
+        }
+
+    }
 
 
 }

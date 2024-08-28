@@ -29,14 +29,25 @@ public class Course {
 
     private String mountainName; //산이름
 
-    private String courseName;
-
     @Column(name = "information", columnDefinition = "TEXT")
-    private String information;
+    private String information; //산정보
+
+    private String courseName; //코스이름
+
+    @Column(name = "course_info", columnDefinition = "TEXT")
+    private String course_info; //코스정보
     private String difficulty; //난이도
-    private int duration; //소요시간 (분단위)
-    private int distance; //구간길이
-    private int altitude; //고도 (미터 단위)
+    private String duration; //소요시간 (분단위)
+    private String distance; //구간길이
+    private String altitude; //고도
+
+    //경도
+    @Column(nullable = false, columnDefinition = "float default 0.0")
+    private double longitude = 0.0;
+
+    //위도
+    @Column(nullable = false, columnDefinition = "float default 0.0")
+    private double latitude = 0.0;
 
 
     @Column(name = "direction", columnDefinition = "TEXT")

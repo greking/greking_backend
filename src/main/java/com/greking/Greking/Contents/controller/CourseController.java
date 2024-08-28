@@ -71,7 +71,6 @@ public class CourseController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
     @PostMapping("/{id}")
     public ResponseEntity<?> updateCourse(@PathVariable Long id){
         try{
@@ -81,6 +80,7 @@ public class CourseController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCourse(@PathVariable Long id){

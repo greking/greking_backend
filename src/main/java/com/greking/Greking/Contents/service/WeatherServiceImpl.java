@@ -107,13 +107,19 @@ public class WeatherServiceImpl implements WeatherService {
 
         for (Mountain mountain : mountains){
             try{
-                //각 산에 대해 날씨 정보를 가져와 저장
-                saveWeatherData(mountain.getId());
+                // 중복 여부를 확인하기 위한 로직 추가
+                boolean exists = weatherRepository.existsByMountainId(mountain.getId());
+
+                if (!exists) {
+                    // 날씨 정보가 없는 경우에만 데이터를 저장
+                    saveWeatherData(mountain.getId());
+                } else {
+                    System.out.println("Weather data already exists for mountain: " + mountain.getName());
+                }
             } catch (JSONException e) {
                 System.out.println("Failed to fetch weather data for mountain: " + mountain.getName() + " - " + e.getMessage());
             }
         }
-
     }
 
     // JSON 파싱 메서드
