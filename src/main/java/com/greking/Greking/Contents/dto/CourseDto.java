@@ -2,7 +2,6 @@ package com.greking.Greking.Contents.dto;
 
 import lombok.*;
 
-import java.util.List;
 
 @Getter
 @Builder
@@ -23,9 +22,6 @@ public class CourseDto {
     private double longitude = 0.0; //출발지 위도
     private double latitude = 0.0; //출발지 경도
     private String direction; //찾아오는길
-
-    private List<RestaurantDto> restaurant;
-    private List<WeatherDto> weather;
 
 
 }

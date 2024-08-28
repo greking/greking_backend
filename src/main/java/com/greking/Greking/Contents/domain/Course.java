@@ -53,10 +53,5 @@ public class Course {
     @Column(name = "direction", columnDefinition = "TEXT")
     private String direction; //찾아오는 길
 
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
-    private List<Restaurant> restaurants;
-
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
-    private List<Weather> weathers;
 
 }

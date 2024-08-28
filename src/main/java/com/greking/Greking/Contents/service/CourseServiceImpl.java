@@ -5,16 +5,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.greking.Greking.Contents.domain.Course;
 import com.greking.Greking.Contents.domain.Mountain;
-import com.greking.Greking.Contents.domain.Restaurant;
-import com.greking.Greking.Contents.domain.Weather;
 import com.greking.Greking.Contents.dto.CourseDto;
-import com.greking.Greking.Contents.dto.MountainDto;
 import com.greking.Greking.Contents.repository.CourseRepository;
-import com.greking.Greking.Contents.repository.MountainRepository;
 import jakarta.transaction.Transactional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,25 +19,22 @@ public class CourseServiceImpl implements CourseService {
 
 
     private final CourseRepository courseRepository;
-    private final MountainRepository mountainRepository;
     private final ApiClient apiClient;
     private final MountainService mountainService;
 
 
-    public CourseServiceImpl(CourseRepository courseRepository, MountainRepository mountainRepository, ApiClient apiClient, MountainService mountainService) {
+    public CourseServiceImpl(CourseRepository courseRepository, ApiClient apiClient, MountainService mountainService) {
         this.courseRepository = courseRepository;
-        this.mountainRepository = mountainRepository;
         this.apiClient = apiClient;
         this.mountainService = mountainService;
     }
 
     @Override
-    public CourseDto getCourseById(Long mountainId) {
+    public CourseDto getCourseById(Long courseId) {
 
-        Mountain mountain = mountainRepository.findById(mountainId)
+        Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new RuntimeException("해당 ID의 산을 찾을수 없습니다"));
 
-        Course course = courseRepository.findByMountain(mountain);
         return convertToDto(course);
     }
 

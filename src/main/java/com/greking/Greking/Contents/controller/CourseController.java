@@ -25,9 +25,9 @@ public class CourseController {
     }
 
     @GetMapping("/getInfo")
-    public ResponseEntity<CourseDto> getCourseById(@RequestParam(name="mountainId") Long mountainId){
+    public ResponseEntity<CourseDto> getCourseById(@RequestParam(name="courseId") Long courseId){
         try{
-            CourseDto course = courseService.getCourseById(mountainId);
+            CourseDto course = courseService.getCourseById(courseId);
             return ResponseEntity.ok(course);
         } catch (Exception e){
             System.out.println("Error occurred while fetching course: " + e.getMessage());

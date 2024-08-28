@@ -1,7 +1,6 @@
 package com.greking.Greking.Contents.controller;
 
 
-import com.greking.Greking.Contents.domain.Restaurant;
 import com.greking.Greking.Contents.dto.RestaurantDto;
 import com.greking.Greking.Contents.service.RestaurantService;
 import org.json.JSONException;
