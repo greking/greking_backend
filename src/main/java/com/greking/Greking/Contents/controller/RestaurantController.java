@@ -23,9 +23,9 @@ public class RestaurantController {
     }
 
     @GetMapping("/getInfo")
-    public ResponseEntity<List<RestaurantDto>> getRestaurantsByMountain(@RequestParam(name = "mountainId") Long mountainId) {
+    public ResponseEntity<List<RestaurantDto>> getRestaurantsByMountain(@RequestParam(name = "courseId") Long courseId) {
         try {
-            List<RestaurantDto> restaurants = restaurantService.getRestaurantsByMountain(mountainId);
+            List<RestaurantDto> restaurants = restaurantService.getRestaurantsByCourse(courseId);
             if (restaurants.isEmpty()) {
                 return ResponseEntity.noContent().build(); // 데이터가 없을 경우 204 응답
             }
@@ -36,10 +36,10 @@ public class RestaurantController {
         }
     }
 
-    @PostMapping("/fetch/{mountainId}")
-    public ResponseEntity<String> fetchAndSaveRestaurants(@PathVariable Long mountainId) throws JSONException {
+    @PostMapping("/fetch/{courseId}")
+    public ResponseEntity<String> fetchAndSaveRestaurants(@PathVariable Long courseId) throws JSONException {
         try {
-            restaurantService.saveRestaurantData(mountainId);
+            restaurantService.saveRestaurantData(courseId);
             return ResponseEntity.ok("Restaurant data successfully fetched and saved.");
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());

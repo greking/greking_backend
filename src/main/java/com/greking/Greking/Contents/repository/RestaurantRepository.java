@@ -1,6 +1,6 @@
 package com.greking.Greking.Contents.repository;
 
-import com.greking.Greking.Contents.domain.Mountain;
+import com.greking.Greking.Contents.domain.Course;
 import com.greking.Greking.Contents.domain.Restaurant;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -11,7 +11,8 @@ import java.util.List;
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
 
 
-    boolean existsByMountainAndNameAndAddress(Mountain mountain, String name, String address);
+    boolean existsByCourseAndNameAndAddress(Course course, String name, String address);
     long countByMountainId(Long mountainId);
-    List<Restaurant> findByMountainId(Long mountainId);
+
+    List<Restaurant> findByCourseId(Long courseId);
 }
