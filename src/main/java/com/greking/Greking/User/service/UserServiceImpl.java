@@ -98,6 +98,8 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new IllegalArgumentException("Course not found"));
 
         UserCourse userCourse = new UserCourse();
+
+        userCourse.setCourseName(course.getCourseName());
         userCourse.setDifficulty(course.getDifficulty());
         userCourse.setUser(user);
         userCourse.setCourse(course);

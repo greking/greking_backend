@@ -41,6 +41,8 @@ public class UserCourse {
 
     private String duration; // 움직인 시간 (초 단위)
 
+    private String courseName; //코스명
+
     @Column(name = "altitude")
     private String altitude; //움직인 고도
 

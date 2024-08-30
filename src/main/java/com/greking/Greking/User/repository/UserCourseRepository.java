@@ -10,9 +10,8 @@ import java.util.Optional;
 
 public interface UserCourseRepository extends JpaRepository<UserCourse, Long> {
 
-    Optional<UserCourse> findTopByUserAndCourseOrderByAddedAtDesc(User user, Course course);
 
-    Optional<UserCourse> findByUserAndCourse(User user, Course course);
+    Optional<UserCourse> findById(Long usercourseId);
 
     List<UserCourse> findByUser(User user);
 
