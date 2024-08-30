@@ -30,10 +30,6 @@ public class AppConfig {
         return new RestTemplate();
     }
 
-    @Bean
-    public UserService userService(UserRepository userRepository, UserCourseRepository userCourseRepository, CourseRepository courseRepository, BCryptPasswordEncoder passwordEncoder, PasswordResetTokenRepository tokenRepository) {
-        return new UserServiceImpl(userRepository, userCourseRepository, courseRepository, passwordEncoder, tokenRepository );
-    }
 
     @Bean
     public SurveyService surveyService(UserRepository userRepository){

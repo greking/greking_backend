@@ -40,7 +40,6 @@ public class UserServiceTest {
         tokenRepository = Mockito.mock(PasswordResetTokenRepository.class);
 
         AppConfig appConfig = new AppConfig();
-        userService = appConfig.userService(userRepository, userCourseRepository, courseRepository, passwordEncoder, tokenRepository );
 
         user = new User();
         user.setEmail("test@example.com");

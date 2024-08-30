@@ -2,7 +2,7 @@ package com.greking.Greking.Common;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
@@ -26,6 +26,15 @@ public class SecurityConfig {
                         .requestMatchers("/api/courses/all").permitAll()
                         .requestMatchers("/api/courses/getInfo").permitAll()
                         .requestMatchers("/api/courses/addAll").permitAll()
+
+                        .requestMatchers("/api/users/register").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/users/{userId}").permitAll()
+
+                        .requestMatchers("/api/users/{userId}/my-courses/{courseId}").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/users/{userId}/my-courses").permitAll()
+                        .requestMatchers("/api/users/{userId}/my-courses/{userCourseId}").permitAll()
+
+                        .requestMatchers("/api/users/{userId}/my-courses/{userCourseId}/complete").permitAll()
                 )
                 .anonymous(withDefaults()) // 익명 사용자 허용
                 .formLogin(AbstractAuthenticationFilterConfigurer::permitAll) // 로그인 폼 접근 허용

@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -40,4 +39,9 @@ public class UserCourse {
     private double calories; // 소모된 칼로리 (kcal 단위)
 
     private long duration; // 움직인 시간 (초 단위)
+
+    private double altitude; //움직인 고도
+
+    @Column(name = "status", nullable = false)
+    private String status = "예정"; // 등산완료했는지 check
 }

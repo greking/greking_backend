@@ -119,13 +119,6 @@ public class CourseServiceImpl implements CourseService {
         return savedCourse;
     }
 
-    //next version
-    @Override
-    @Transactional
-    public Course updateCourse(Long id) throws JsonProcessingException {
-        return null;
-    }
-
     @Override
     public void deleteCourse(Long id) {
 
@@ -135,5 +128,12 @@ public class CourseServiceImpl implements CourseService {
         } else {
             throw new IllegalArgumentException("course not found");
         }
+    }
+
+    //next version
+    @Override
+    @Transactional
+    public Course updateCourse(Long id) throws JsonProcessingException {
+        return null;
     }
 }

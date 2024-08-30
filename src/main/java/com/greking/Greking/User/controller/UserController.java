@@ -2,6 +2,7 @@ package com.greking.Greking.User.controller;
 
 import com.greking.Greking.User.domain.PasswordResetToken;
 import com.greking.Greking.User.domain.User;
+import com.greking.Greking.User.domain.UserCourse;
 import com.greking.Greking.User.service.PasswordResetService;
 import com.greking.Greking.User.service.UserService;
 import jakarta.validation.Valid;
@@ -13,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -84,7 +86,8 @@ public class UserController {
     public ResponseEntity<?> deleteUser(@RequestParam(name = "userId") Long userId) {
         try {
             userService.deleteUser(userId);
-            return new ResponseEntity<>(HttpStatus.OK);
+            String log = "회원 삭제기 완료되었습니다.";
+            return new ResponseEntity<>(log, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -92,45 +95,46 @@ public class UserController {
 
     //회원 정보 가져오기
     @GetMapping("/{userId}")
-    public ResponseEntity<?> getUser(@RequestParam(name = "userId") Long userId){
+    public ResponseEntity<?> getUser(@PathVariable(name = "userId") Long userId){
         try{
-            userService.getUserById(userId);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-    }
-
-
-    //유저 코스 가져오기
-    @GetMapping("/{userId}/my-course")
-    public ResponseEntity<?> getMyCourse(@RequestParam(name = "userId") Long userId){
-        try{
-            userService.getMyCourse(userId);
-            return new ResponseEntity<>(HttpStatus.OK);
+            User user = userService.getUserById(userId);
+            return new ResponseEntity<>(user, HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
     //유저 코스 등록하기
     @PostMapping("/{userId}/my-courses/{courseId}")
-    public ResponseEntity<?> addCourseToMyCourses(@RequestParam (name = "userId") Long userId, @RequestParam (name = "courseId") Long courseId) {
+    public ResponseEntity<?> addCourseToMyCourses(@PathVariable (name = "userId") Long userId, @PathVariable (name = "courseId") Long courseId) {
         try {
-            userService.addCourseToMyCourse(userId, courseId);
-            return new ResponseEntity<>(HttpStatus.OK);
+            UserCourse userCourse = userService.addCourseToMyCourse(userId, courseId);
+            return new ResponseEntity<>(userCourse, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
+
+    //유저 코스 가져오기
+    @GetMapping("/{userId}/my-courses")
+    public ResponseEntity<?> getMyCourse(@PathVariable(name = "userId") Long userId){
+        try{
+            List<UserCourse> userCourses = userService.getMyCourse(userId);
+            return new ResponseEntity<>(userCourses, HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     //유저 코스 삭제하기
-    @DeleteMapping("/my-courses/{userCourseId}")
-    public ResponseEntity<?> deleteSpecificCourse(@RequestParam(name = "courseId") Long userCourseId) {
+    @DeleteMapping("/{userId}/my-courses/{userCourseId}")
+    public ResponseEntity<?> deleteSpecificCourse(@PathVariable(name = "userId") Long userId, @PathVariable(name = "userCourseId") Long userCourseId) {
         try {
-            userService.deleteCourseToMyCourse(userCourseId);
-            return new ResponseEntity<>(HttpStatus.OK);
+            userService.deleteCourseToMyCourse(userId, userCourseId);
+            String log = "유저코스가 삭제가 완료되었습니다.";
+            return new ResponseEntity<>(log,HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -138,12 +142,12 @@ public class UserController {
 
 
     //등산완료시 등산데이터 저장
-    @PostMapping("/{userId}/my-course/{courseId}/complete")
-    public ResponseEntity<?> completeHiking(@RequestParam(name="userId") Long userId, @RequestParam(name="courseId") Long courseId,
+    @PostMapping("/{userId}/my-courses/{userCourseId}/complete")
+    public ResponseEntity<?> completeHiking(@PathVariable(name="userId") Long userId, @PathVariable(name="userCourseId") Long userCourseId,
                                             @RequestParam double distance, @RequestParam double calories,
-                                            @RequestParam long duration){
+                                            @RequestParam long duration, @RequestParam double altitude){
         try{
-            userService.completeHiking(userId,courseId,distance,calories,duration);
+            userService.completeHiking(userId,userCourseId,distance,calories,duration, altitude);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

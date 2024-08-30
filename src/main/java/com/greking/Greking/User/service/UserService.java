@@ -24,15 +24,15 @@ public interface UserService {
     List<UserCourse> getMyCourse(Long userId);
 
     //회원 코스정보 담기
-    void addCourseToMyCourse(Long userId, Long courseId);
+    UserCourse addCourseToMyCourse(Long userId, Long courseId);
 
 
     //회원 코스정보 삭제
-    void deleteCourseToMyCourse(Long userCourseId);
+    void deleteCourseToMyCourse(Long userId, Long userCourseId);
 
 
     //등산코스 완료
-    void completeHiking(Long userId, Long courseId, double distance, double calories, long duration);
+    void completeHiking(Long userId, Long userCourseId, double distance, double calories, long duration, double altitude);
 
 
 
