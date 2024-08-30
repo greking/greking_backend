@@ -5,6 +5,7 @@ import com.greking.Greking.Contents.repository.MountainRepository;
 import com.greking.Greking.Contents.service.*;
 import com.greking.Greking.Survey.service.SurveyService;
 import com.greking.Greking.Survey.service.SurveyServiceImpl;
+import com.greking.Greking.User.repository.UserCourseRepository;
 import com.greking.Greking.User.repository.UserRepository;
 import com.greking.Greking.User.repository.PasswordResetTokenRepository;
 import com.greking.Greking.User.service.EmailService;
@@ -30,9 +31,8 @@ public class AppConfig {
     }
 
     @Bean
-    public UserService userService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder
-                                   , PasswordResetTokenRepository tokenRepository) {
-        return new UserServiceImpl(userRepository, passwordEncoder,  tokenRepository);
+    public UserService userService(UserRepository userRepository, UserCourseRepository userCourseRepository, CourseRepository courseRepository, BCryptPasswordEncoder passwordEncoder, PasswordResetTokenRepository tokenRepository) {
+        return new UserServiceImpl(userRepository, userCourseRepository, courseRepository, passwordEncoder, tokenRepository );
     }
 
     @Bean

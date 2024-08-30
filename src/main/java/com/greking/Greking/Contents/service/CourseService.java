@@ -13,7 +13,6 @@ public interface CourseService {
     //코스 수정하기
     //코스 삭제하기
     //모든 코스 정보 가져오기
-
     CourseDto getCourseById(Long courseId);
     List<CourseDto> getAllCourses();
 

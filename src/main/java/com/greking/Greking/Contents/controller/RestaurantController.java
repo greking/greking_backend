@@ -22,7 +22,7 @@ public class RestaurantController {
     }
 
     @GetMapping("/getInfo")
-    public ResponseEntity<List<RestaurantDto>> getRestaurantsByMountain(@RequestParam(name = "courseId") Long courseId) {
+    public ResponseEntity<List<RestaurantDto>> getRestaurantsByCourse(@RequestParam(name = "courseId") Long courseId) {
         try {
             List<RestaurantDto> restaurants = restaurantService.getRestaurantsByCourse(courseId);
             if (restaurants.isEmpty()) {

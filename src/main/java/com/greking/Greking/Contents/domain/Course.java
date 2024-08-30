@@ -32,6 +32,7 @@ public class Course {
     @Column(name = "information", columnDefinition = "TEXT")
     private String information; //산정보
 
+    private String courseImage; //코스이미지
     private String courseName; //코스이름
 
     @Column(name = "course_info", columnDefinition = "TEXT")

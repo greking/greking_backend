@@ -52,6 +52,7 @@ public class CourseServiceImpl implements CourseService {
                 .courseName(course.getCourseName())
                 .information(course.getInformation())
                 .course_info(course.getCourse_info())
+                .courseImage(course.getCourseImage())
                 .difficulty(course.getDifficulty())
                 .distance(course.getDistance())
                 .duration(course.getDuration())
@@ -82,7 +83,7 @@ public class CourseServiceImpl implements CourseService {
         double latitude = mountain.getLatitude();
         double longitude = mountain.getLongitude();
 
-
+        // 1번째 정보 가져오기
         String responseData = apiClient.fetchMountainData(mountainName, latitude, longitude);
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -122,7 +123,6 @@ public class CourseServiceImpl implements CourseService {
     @Override
     @Transactional
     public Course updateCourse(Long id) throws JsonProcessingException {
-
         return null;
     }
 

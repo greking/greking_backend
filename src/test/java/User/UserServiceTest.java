@@ -1,8 +1,10 @@
 package User;
 
 import com.greking.Greking.Common.AppConfig;
+import com.greking.Greking.Contents.repository.CourseRepository;
 import com.greking.Greking.User.domain.User;
 import com.greking.Greking.User.repository.PasswordResetTokenRepository;
+import com.greking.Greking.User.repository.UserCourseRepository;
 import com.greking.Greking.User.repository.UserRepository;
 import com.greking.Greking.User.service.EmailService;
 import com.greking.Greking.User.service.PasswordResetService;
@@ -22,6 +24,8 @@ public class UserServiceTest {
     EmailService emailService;
     PasswordResetTokenRepository tokenRepository;
     PasswordResetService passwordResetService;
+    UserCourseRepository userCourseRepository;
+    CourseRepository courseRepository;
     UserService userService;
     UserRepository userRepository;
     BCryptPasswordEncoder passwordEncoder;
@@ -36,7 +40,7 @@ public class UserServiceTest {
         tokenRepository = Mockito.mock(PasswordResetTokenRepository.class);
 
         AppConfig appConfig = new AppConfig();
-        userService = appConfig.userService(userRepository, passwordEncoder, tokenRepository);
+        userService = appConfig.userService(userRepository, userCourseRepository, courseRepository, passwordEncoder, tokenRepository );
 
         user = new User();
         user.setEmail("test@example.com");

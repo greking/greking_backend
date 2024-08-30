@@ -13,6 +13,7 @@ public class CourseDto {
     private String mountainName; //산이름
     private String information; //산정보
 
+    private String courseImage; //코스이미지
     private String courseName; //코스이름
     private String course_info; //코스정보
     private String difficulty; //난이도

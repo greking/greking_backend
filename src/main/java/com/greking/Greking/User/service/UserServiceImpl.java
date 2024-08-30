@@ -1,8 +1,12 @@
 package com.greking.Greking.User.service;
 
+import com.greking.Greking.Contents.domain.Course;
+import com.greking.Greking.Contents.repository.CourseRepository;
 import com.greking.Greking.User.domain.PasswordResetToken;
 import com.greking.Greking.User.domain.User;
+import com.greking.Greking.User.domain.UserCourse;
 import com.greking.Greking.User.repository.PasswordResetTokenRepository;
+import com.greking.Greking.User.repository.UserCourseRepository;
 import com.greking.Greking.User.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -10,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -17,13 +22,16 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final UserCourseRepository userCourseRepository;
+    private final CourseRepository courseRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final PasswordResetTokenRepository tokenRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder,
-                            PasswordResetTokenRepository tokenRepository) {
+    public UserServiceImpl(UserRepository userRepository, UserCourseRepository userCourseRepository, CourseRepository courseRepository, BCryptPasswordEncoder passwordEncoder, PasswordResetTokenRepository tokenRepository) {
         this.userRepository = userRepository;
+        this.userCourseRepository = userCourseRepository;
+        this.courseRepository = courseRepository;
         this.passwordEncoder = passwordEncoder;
         this.tokenRepository = tokenRepository;
     }
@@ -34,6 +42,14 @@ public class UserServiceImpl implements UserService {
         validateUser(user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
+    }
+
+
+    //회원정보 가져오기
+    @Override
+    public User getUserById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("해당 ID의 유저를 찾을 수 없습니다."));
     }
 
 
@@ -59,6 +75,57 @@ public class UserServiceImpl implements UserService {
         }
         if (!user.isTermsOfServiceAccepted() || !user.isPrivacyPolicyAccepted()) {
             throw new Exception("Terms of Service and Privacy Policy must be accepted.");
+        }
+    }
+
+    //회원 코스 찾기
+    @Override
+    public List<UserCourse> getMyCourse(Long userId) {
+        User user = getUserById(userId);
+        return userCourseRepository.findByUser(user);
+    }
+
+    @Override
+    public void completeHiking(Long userId, Long courseId, double distance, double calories, long duration) {
+        User user = getUserById(userId);
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new IllegalArgumentException("Course not found"));
+
+        // Optional에서 UserCourse 객체를 꺼냄
+        UserCourse userCourse = userCourseRepository.findTopByUserAndCourseOrderByAddedAtDesc(user, course)
+                .orElseThrow(() -> new IllegalArgumentException("UserCourse not found"));
+
+
+
+        userCourse.setDistance(distance);
+        userCourse.setCalories(calories);
+        userCourse.setDuration(duration);
+
+        userCourseRepository.save(userCourse);
+    }
+
+    //회원 코스 담기
+    @Override
+    public void addCourseToMyCourse(Long userId, Long courseId) {
+        User user = getUserById(userId);
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new IllegalArgumentException("Course not found"));
+
+        UserCourse userCourse = new UserCourse();
+        userCourse.setUser(user);
+        userCourse.setCourse(course);
+        userCourseRepository.save(userCourse);
+    }
+
+
+    //회원 코스 삭제
+    @Override
+    @Transactional
+    public void deleteCourseToMyCourse(Long userCourseId) {
+        if (userCourseRepository.existsById(userCourseId)) {
+            userCourseRepository.deleteById(userCourseId);
+        } else {
+            throw new IllegalArgumentException("UserCourse not found");
         }
     }
 }
