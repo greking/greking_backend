@@ -32,7 +32,7 @@ public interface UserService {
 
 
     //등산코스 완료
-    void completeHiking(Long userId, Long userCourseId, double distance, double calories, long duration, double altitude);
+    void completeHiking(Long userId, Long userCourseId, String distance, String calories, String duration, String altitude);
 
 
 

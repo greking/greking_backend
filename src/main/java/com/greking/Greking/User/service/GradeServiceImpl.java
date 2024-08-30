@@ -11,13 +11,21 @@ public class GradeServiceImpl implements GradeService {
 
     @Override
     @Transactional
-    public void addExperience(Grade grade, int difficulty){
+    public void addExperience(Grade grade, String difficulty){
+        if (grade.getLevel() == 5){
+            grade.setExperience(0);
+            return ;
+        }
 
-        int experienceGained = Grade.DIFFICULTY_EXPERIENCE_MAP.getOrDefault(difficulty, 0);
+        int experienceGained = Grade.DIFFICULTY_EXPERIENCE_MAP.getOrDefault(difficulty, 0);;
         grade.setExperience(grade.getExperience() + experienceGained);
 
         while (grade.getExperience() >= Grade.LEVEL_UP_THRESHOLD){
             levelUp(grade);
+            if (grade.getLevel() == 5){
+                grade.setExperience(0);
+                break;
+            }
         }
     }
 
@@ -27,6 +35,10 @@ public class GradeServiceImpl implements GradeService {
         if(grade.getLevel() < 5){
             grade.setLevel(grade.getLevel() + 1);
             grade.setExperience(grade.getExperience() - Grade.LEVEL_UP_THRESHOLD);
+        }
+
+        if (grade.getLevel() == 5){
+            grade.setExperience(0);
         }
 
     }

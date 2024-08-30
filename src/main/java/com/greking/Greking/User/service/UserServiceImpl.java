@@ -98,6 +98,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new IllegalArgumentException("Course not found"));
 
         UserCourse userCourse = new UserCourse();
+        userCourse.setDifficulty(course.getDifficulty());
         userCourse.setUser(user);
         userCourse.setCourse(course);
         userCourse.setAddedAt(LocalDateTime.now());
@@ -122,7 +123,9 @@ public class UserServiceImpl implements UserService {
 
     //등산 완료
     @Override
-    public void completeHiking(Long userId, Long userCourseId, double distance, double calories, long duration, double altitude) {
+    public void completeHiking(Long userId, Long userCourseId, String distance, String calories, String duration, String altitude) {
+
+        User user = getUserById(userId);
 
         UserCourse userCourse = userCourseRepository.findById(userCourseId)
                 .orElseThrow(() -> new IllegalArgumentException("UserCourse not found"));
@@ -131,6 +134,10 @@ public class UserServiceImpl implements UserService {
         if (!userCourse.getUser().getUserid().equals(userId)) {
             throw new IllegalArgumentException("UserCourse does not belong to the specified user");
         }
+
+        //코스 난이도에 따른 레벨업
+        //1번 완료된것은 클라측에서 제어 (따로 예외처리 X)
+        gradeService.addExperience(user.getGrade(), userCourse.getDifficulty());
 
         userCourse.setStatus("완료"); //status를 "완료"로 업데이트
         userCourse.setAltitude(altitude);

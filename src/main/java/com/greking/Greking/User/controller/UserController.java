@@ -144,9 +144,12 @@ public class UserController {
     //등산완료시 등산데이터 저장
     @PostMapping("/{userId}/my-courses/{userCourseId}/complete")
     public ResponseEntity<?> completeHiking(@PathVariable(name="userId") Long userId, @PathVariable(name="userCourseId") Long userCourseId,
-                                            @RequestParam double distance, @RequestParam double calories,
-                                            @RequestParam long duration, @RequestParam double altitude){
+                                            @RequestBody Map<String, String> params){
         try{
+            String distance = params.get("distance");
+            String calories = params.get("calories");
+            String duration = params.get("duration");
+            String altitude = params.get("altitude");
             userService.completeHiking(userId,userCourseId,distance,calories,duration, altitude);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e){

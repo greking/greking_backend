@@ -17,12 +17,10 @@ public class Grade {
     //레벨업에 필요한 경험치
     public static final int LEVEL_UP_THRESHOLD = 6000;
 
-    //난이도별 경험치 (이 값은 서비스 로지에서 사용)
-    public static final Map<Integer, Integer> DIFFICULTY_EXPERIENCE_MAP = Map.of(
-            1, 100,
-            2, 300,
-            3, 600,
-            4, 1000,
-            5, 1500
+    //난이도별 경험치 (이 값은 서비스 로직에서 사용)
+    public static final Map<String, Integer> DIFFICULTY_EXPERIENCE_MAP = Map.of(
+            "easy", 500,
+            "normal", 1000,
+            "hard", 1500
     );
 }
