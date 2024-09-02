@@ -4,10 +4,7 @@ package com.greking.Greking.Review.domain;
 import com.greking.Greking.User.domain.User;
 import com.greking.Greking.User.domain.UserCourse;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter

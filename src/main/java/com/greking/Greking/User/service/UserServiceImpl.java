@@ -85,7 +85,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserCourse> getMyCourse(Long userId) {
         User user = getUserById(userId);
-        System.out.println(userCourseRepository.findByUser(user));
         return userCourseRepository.findByUser(user);
     }
 

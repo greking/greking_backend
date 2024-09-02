@@ -1,7 +1,10 @@
 package com.greking.Greking.Review.service;
 
 
+import com.greking.Greking.Contents.domain.Restaurant;
+import com.greking.Greking.Contents.dto.RestaurantDto;
 import com.greking.Greking.Review.domain.Review;
+import com.greking.Greking.Review.dto.ReviewDto;
 import com.greking.Greking.Review.repository.ReviewRepository;
 import com.greking.Greking.User.domain.User;
 import com.greking.Greking.User.domain.UserCourse;
@@ -34,13 +37,15 @@ public class ReviewServiceImpl implements ReviewService{
     //사용자 찾기 -> 사용자의 유저코스 찾기 -> 사용자의 유저코스의 작성된 리뷰 찾기
     @Override
     @Transactional
-    public Review getReview(Long userId, Long userCourseId) {
+    public ReviewDto getReview(Long userId, Long userCourseId) {
         User user = userService.getUserById(userId);
         UserCourse userCourse = userCourseRepository.findById(userCourseId)
                 .orElseThrow(() -> new RuntimeException("해당 ID의 코스를 찾을 수 없습니다."));
-
-        return reviewRepository.findByUserAndUserCourse(user, userCourse)
+        Review review = reviewRepository.findByUserAndUserCourse(user, userCourse)
                 .orElseThrow(() -> new RuntimeException("해당 ID의 리뷰를 찾을 수 없습니다."));
+
+
+        return convertToDto(review);
     }
 
     //리뷰생성
@@ -59,9 +64,7 @@ public class ReviewServiceImpl implements ReviewService{
             throw new IllegalStateException("리뷰는 등산 코스가 완료된 후에만 작성 가능합니다.");
         }
 
-        Review review = reviewRepository.findByUserAndUserCourse(user,userCourse)
-                .orElseThrow(() -> new RuntimeException("해당 ID의 리뷰를 찾을수 없습니다"));
-
+        Review review = new Review();
 
         review.setNickName(user.getNickname());
         review.setCourseName(userCourse.getCourseName());
@@ -75,5 +78,15 @@ public class ReviewServiceImpl implements ReviewService{
         return reviewRepository.save(review);
     }
 
+    private ReviewDto convertToDto(Review review) {
+        return ReviewDto.builder()
+                .id(review.getId())
+                .review_score(review.getReview_score())
+                .review_difficulty(review.getReview_difficulty())
+                .review_text(review.getReview_text())
+                .courseName(review.getCourseName())
+                .nickName(review.getNickName())
+                .build();
+    }
 
 }
