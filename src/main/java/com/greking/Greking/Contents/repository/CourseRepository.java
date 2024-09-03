@@ -5,7 +5,12 @@ import com.greking.Greking.Contents.domain.Mountain;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface CourseRepository extends JpaRepository<Course, Long> {
     Course findByMountain(Mountain mountain);
+    List<Course> findByFitnessLevel(String fitnessLevel);
+
+    List<Course> findByDifficulty(String difficulty);
 }

@@ -38,6 +38,8 @@ public class SecurityConfig {
 
                         .requestMatchers("/api/review/{userId}/{userCourseId}").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/review/{userId}/{userCourseId}").permitAll()
+
+                        .requestMatchers(HttpMethod.GET, "/api/recommend/user/{userId}").permitAll()
                 )
                 .anonymous(withDefaults()) // 익명 사용자 허용
                 .formLogin(AbstractAuthenticationFilterConfigurer::permitAll) // 로그인 폼 접근 허용
