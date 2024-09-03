@@ -31,6 +31,12 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 
+	// Spring Retry 라이브러리 추가
+	implementation 'org.springframework.retry:spring-retry'
+
+	// Spring AOP (Aspect-Oriented Programming) 추가
+	implementation 'org.springframework:spring-aspects'
+
 	// Testing
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
