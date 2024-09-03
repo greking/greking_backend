@@ -31,6 +31,9 @@ public class RecommendationServiceImpl implements RecommendationService{
 
         String difficulty = mapFitnessLevelToDifficulty(user.getFitnessLevel());
         return courseRepository.findByDifficulty(difficulty);
+
+
+        //next version -> review, category통해 collaborative 추천로직 진행
     }
 
 

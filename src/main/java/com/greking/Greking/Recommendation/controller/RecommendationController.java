@@ -19,16 +19,14 @@ import java.util.List;
 public class RecommendationController {
 
     private final RecommendationService recommendationService;
-    private final UserRepository userRepository;
 
     @Autowired
-    public RecommendationController(RecommendationService recommendationService, UserRepository userRepository) {
+    public RecommendationController(RecommendationService recommendationService) {
         this.recommendationService = recommendationService;
-        this.userRepository = userRepository;
     }
 
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/{userId}")
     public ResponseEntity<List<Course>> recommendCourses(@PathVariable(name = "userId") Long userId){
         try{
 
