@@ -81,6 +81,14 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    //닉네임 있는지 유효성 검증
+    @Override
+    public boolean validateNickname(String nickname) {
+        return userRepository.existsByNickname(nickname);
+    }
+
+
+
     //회원 코스 찾기
     @Override
     public List<UserCourse> getMyCourse(Long userId) {

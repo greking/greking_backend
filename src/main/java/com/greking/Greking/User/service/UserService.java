@@ -19,6 +19,9 @@ public interface UserService {
     //회원삭제 method
     void deleteUser(Long userId);
 
+    //닉네임 중복 method
+    boolean validateNickname(String nickname);
+
 
     //회원 코스정보 가져오기
     List<UserCourse> getMyCourse(Long userId);

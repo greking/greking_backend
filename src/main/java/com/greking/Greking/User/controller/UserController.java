@@ -104,6 +104,13 @@ public class UserController {
         }
     }
 
+    //닉네임 중복확인
+    @GetMapping("/validate/{nickname}")
+    public ResponseEntity<Boolean> validateNickname(@PathVariable(name = "nickname")String nickname){
+        return ResponseEntity.ok(userService.validateNickname(nickname));
+
+    }
+
 
     //유저 코스 등록하기
     @PostMapping("/{userId}/my-courses/{courseId}")
