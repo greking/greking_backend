@@ -23,9 +23,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers("/api/weather/**").permitAll()
                         .requestMatchers("/api/restaurant/**").permitAll()
-                        .requestMatchers("/api/courses/all").permitAll()
-                        .requestMatchers("/api/courses/getInfo").permitAll()
-                        .requestMatchers("/api/courses/addAll").permitAll()
 
                         .requestMatchers("/api/users/register").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/users/{userId}").permitAll()
@@ -38,6 +35,8 @@ public class SecurityConfig {
 
                         .requestMatchers("/api/review/{userId}/{userCourseId}").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/review/{userId}/{userCourseId}").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/review/all").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/review/{courseId}").permitAll()
 
                         .requestMatchers(HttpMethod.GET, "/api/recommend/{userId}").permitAll()
 

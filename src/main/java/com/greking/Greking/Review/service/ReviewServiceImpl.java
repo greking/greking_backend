@@ -1,8 +1,5 @@
 package com.greking.Greking.Review.service;
 
-
-import com.greking.Greking.Contents.domain.Restaurant;
-import com.greking.Greking.Contents.dto.RestaurantDto;
 import com.greking.Greking.Review.domain.Review;
 import com.greking.Greking.Review.dto.ReviewDto;
 import com.greking.Greking.Review.repository.ReviewRepository;
@@ -14,6 +11,9 @@ import com.greking.Greking.User.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -33,6 +33,25 @@ public class ReviewServiceImpl implements ReviewService{
     }
 
 
+
+    //리뷰 전체 가져오기
+    @Override
+    public List<ReviewDto> getAllReview() {
+        List<Review> review = reviewRepository.findAll();
+        return review.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+
+    @Override
+    public List<ReviewDto> getReviewWithCourse(Long courseId) {
+        List<Review> review = reviewRepository.findByCourseId(courseId);
+        return review.stream() //리스트 'review'에서 스트림을 생성
+                .map(this::convertToDto) //각 review 객체를 reviewDto로 변환
+                .collect(Collectors.toList()); //
+    }
+
     //리뷰조회
     //사용자 찾기 -> 사용자의 유저코스 찾기 -> 사용자의 유저코스의 작성된 리뷰 찾기
     @Override
@@ -43,7 +62,6 @@ public class ReviewServiceImpl implements ReviewService{
                 .orElseThrow(() -> new RuntimeException("해당 ID의 코스를 찾을 수 없습니다."));
         Review review = reviewRepository.findByUserAndUserCourse(user, userCourse)
                 .orElseThrow(() -> new RuntimeException("해당 ID의 리뷰를 찾을 수 없습니다."));
-
 
         return convertToDto(review);
     }
@@ -68,6 +86,7 @@ public class ReviewServiceImpl implements ReviewService{
 
         review.setNickName(user.getNickname());
         review.setCourseName(userCourse.getCourseName());
+        review.setCourse(userCourse.getCourse());
         review.setUser(userService.getUserById(userId));
         review.setUserCourse(userCourse);
         review.setReview_score(review_score);

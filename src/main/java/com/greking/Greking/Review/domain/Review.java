@@ -1,6 +1,7 @@
 package com.greking.Greking.Review.domain;
 
 
+import com.greking.Greking.Contents.domain.Course;
 import com.greking.Greking.User.domain.User;
 import com.greking.Greking.User.domain.UserCourse;
 import jakarta.persistence.*;
@@ -26,9 +27,14 @@ public class Review {
     private String courseName;
     private String nickName;
 
+
     @ManyToOne
     @JoinColumn(name ="user_id")
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "course_id")
+    private Course course;
 
     @ManyToOne
     @JoinColumn(name="usercourse_id")

@@ -6,15 +6,18 @@ import com.greking.Greking.Review.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/review")
 public class ReviewController {
 
-    private ReviewService reviewService;
+    private final ReviewService reviewService;
+
     @Autowired
     public ReviewController(ReviewService reviewService) {
         this.reviewService = reviewService;
@@ -35,6 +38,31 @@ public class ReviewController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    //리뷰 조회 - 전체
+    @GetMapping("/all")
+    public ResponseEntity<List<ReviewDto>> getAllReview(){
+        try{
+            List<ReviewDto> reviewDto = reviewService.getAllReview();
+            return new ResponseEntity<>(reviewDto, HttpStatus.OK);
+        } catch (Exception e){
+            System.out.println("Error occurred while fetching review: " + e.getMessage());
+            return ResponseEntity.status(404).body(null); // 예외가 발생하면 404 응답
+        }
+    }
+
+    //리뷰 조회 - 코스
+    @GetMapping("/{courseId}")
+    public ResponseEntity<List<ReviewDto>> getCourseReview(@PathVariable (name = "courseId") Long courseId){
+        try{
+            List<ReviewDto> reviewDto = reviewService.getReviewWithCourse(courseId);
+            return new ResponseEntity<>(reviewDto, HttpStatus.OK);
+        } catch (Exception e){
+            System.out.println("Error occurred while fetching review: " + e.getMessage());
+            return ResponseEntity.status(404).body(null); // 예외가 발생하면 404 응답
+        }
+    }
+
 
     //리뷰 조회
     @GetMapping("/{userId}/{userCourseId}")

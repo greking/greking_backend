@@ -114,9 +114,7 @@ public class CourseServiceImpl implements CourseService {
         course.setAltitude(altitude);
 
         // Course를 저장
-        Course savedCourse = courseRepository.save(course);
-
-        return savedCourse;
+        return courseRepository.save(course);
     }
 
     @Override

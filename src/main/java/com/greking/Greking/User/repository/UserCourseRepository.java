@@ -16,4 +16,5 @@ public interface UserCourseRepository extends JpaRepository<UserCourse, Long> {
     List<UserCourse> findByUser(User user);
 
     void delete(UserCourse userCourse);
+
 }
