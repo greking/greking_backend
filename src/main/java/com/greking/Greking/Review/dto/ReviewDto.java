@@ -1,5 +1,6 @@
 package com.greking.Greking.Review.dto;
 
+import com.greking.Greking.Contents.domain.Course;
 import lombok.*;
 
 @Getter
@@ -16,5 +17,6 @@ public class ReviewDto {
     private String courseName;
     private String nickName;
 
+    private Course course;
 
 }
