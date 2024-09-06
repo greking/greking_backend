@@ -23,7 +23,7 @@ public class ScheduledTasks {
     @Scheduled(cron = "0 0 7 * *?")
     public void updateWeatherData(){
         try {
-            weatherService.saveAllWeatherData();
+            weatherService.updateAllWeatherData();
             log.info("Weather data updated successfully at 7 AM.");
         } catch (Exception e) {
             log.error("Failed to update weather data at 7 AM: " + e.getMessage(), e);

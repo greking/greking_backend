@@ -23,6 +23,22 @@ public class WeatherDto {
 
     private LocalDateTime tmFc;
 
+    //Today 정보
+    private LocalDate forecastDate;
+    private String condition;
+    private float temperature;
+    private int predictRain;
+
+    private LocalDate forecastDate1;
+    private String condition1;
+    private float temperature1;
+    private int predictRain1;
+
+    private LocalDate forecastDate2;
+    private String condition2;
+    private float temperature2;
+    private int predictRain2;
+
     private LocalDate forecastDate3;
     private String condition3;
     private float temperature3;

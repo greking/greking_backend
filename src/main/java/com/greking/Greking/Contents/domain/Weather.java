@@ -34,6 +34,24 @@ public class Weather {
     private String mountainName;
     private String addressState;
 
+    //Today 정보
+    private LocalDate forecastDate;
+    private String condition;
+    private float temperature;
+    private int predictRain;
+
+    //1일차 정보
+    private LocalDate forecastDate1;
+    private String condition1;
+    private float temperature1;
+    private int predictRain1;
+
+    //2일차 정보
+    private LocalDate forecastDate2;
+    private String condition2;
+    private float temperature2;
+    private int predictRain2;
+
 
     // 3일차 정보
     private LocalDate forecastDate3;

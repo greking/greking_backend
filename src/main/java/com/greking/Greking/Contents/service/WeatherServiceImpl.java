@@ -14,12 +14,15 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+
 @Service
 public class WeatherServiceImpl implements WeatherService {
 
     private final WeatherRepository weatherRepository;
     private final MountainRepository mountainRepository;
     private final ApiClient apiClient;
+
+
 
     public WeatherServiceImpl(WeatherRepository weatherRepository, MountainRepository mountainRepository, ApiClient apiClient) {
         this.weatherRepository = weatherRepository;
@@ -78,6 +81,18 @@ public class WeatherServiceImpl implements WeatherService {
                 .tmFc(weather.getTmFc())
                 .westEastCode(weather.getWestEastCode())
                 .cityCode(weather.getCityCode())
+                .forecastDate(weather.getForecastDate())
+                .condition(weather.getCondition())
+                .temperature(weather.getTemperature())
+                .predictRain(weather.getPredictRain())
+                .forecastDate1(weather.getForecastDate1())
+                .condition1(weather.getCondition1())
+                .temperature1(weather.getTemperature1())
+                .predictRain1(weather.getPredictRain1())
+                .forecastDate2(weather.getForecastDate2())
+                .condition2(weather.getCondition2())
+                .temperature2(weather.getTemperature2())
+                .predictRain2(weather.getPredictRain2())
                 .forecastDate3(weather.getForecastDate3())
                 .condition3(weather.getCondition3())
                 .temperature3(weather.getTemperature3())
@@ -118,6 +133,73 @@ public class WeatherServiceImpl implements WeatherService {
                 }
             } catch (JSONException e) {
                 System.out.println("Failed to fetch weather data for mountain: " + mountain.getName() + " - " + e.getMessage());
+            }
+        }
+    }
+
+    @Override
+    public void updateAllWeatherData() throws JSONException {
+        List<Mountain> mountains = mountainRepository.findAll();
+
+        for (Mountain mountain : mountains) {
+            try {
+                Weather existingData = weatherRepository.findByMountain(mountain);
+
+                existingData.setForecastDate(LocalDate.now());
+                existingData.setForecastDate1(LocalDate.now().plusDays(1));
+                existingData.setForecastDate2(LocalDate.now().plusDays(2));
+                existingData.setForecastDate3(LocalDate.now().plusDays(3));
+                existingData.setForecastDate4(LocalDate.now().plusDays(4));
+                existingData.setForecastDate5(LocalDate.now().plusDays(5));
+                existingData.setForecastDate6(LocalDate.now().plusDays(6));
+                existingData.setForecastDate7(LocalDate.now().plusDays(7));
+
+
+                existingData.setCondition(existingData.getCondition3());
+                existingData.setTemperature(existingData.getTemperature3());
+                existingData.setPredictRain(existingData.getPredictRain3());
+
+                existingData.setCondition1(existingData.getCondition4());
+                existingData.setTemperature1(existingData.getTemperature4());
+                existingData.setPredictRain1(existingData.getPredictRain4());
+
+                existingData.setCondition2(existingData.getCondition5());
+                existingData.setTemperature2(existingData.getTemperature5());
+                existingData.setPredictRain2(existingData.getPredictRain5());
+
+                // 중기전망조회 API 호출
+                String forecastData = apiClient.fetchWeatherData(mountain.getWestEastCode());
+
+                // 중기기온조회 API 호출
+                String temperatureData = apiClient.fetchWeatherTemp(mountain.getCityCode());
+
+                Weather parsedData = parseWeatherData(forecastData, temperatureData);
+
+                existingData.setCondition3(parsedData.getCondition3());
+                existingData.setTemperature3(parsedData.getTemperature3());
+                existingData.setPredictRain3(parsedData.getPredictRain3());
+
+                existingData.setCondition4(parsedData.getCondition4());
+                existingData.setTemperature4(parsedData.getTemperature4());
+                existingData.setPredictRain4(parsedData.getPredictRain4());
+
+                existingData.setCondition5(parsedData.getCondition5());
+                existingData.setTemperature5(parsedData.getTemperature5());
+                existingData.setPredictRain5(parsedData.getPredictRain5());
+
+                existingData.setCondition6(parsedData.getCondition6());
+                existingData.setTemperature6(parsedData.getTemperature6());
+                existingData.setPredictRain6(parsedData.getPredictRain6());
+
+                existingData.setCondition7(parsedData.getCondition7());
+                existingData.setTemperature7(parsedData.getTemperature7());
+                existingData.setPredictRain7(parsedData.getPredictRain7());
+
+                weatherRepository.save(existingData);
+
+            } catch (Exception e){
+                System.out.println("Failed to fetch weather data for mountain: " + mountain.getName() + " - " + e.getMessage());
+                throw e; //예외를 던져 컨트롤러에서 실패로 처리
             }
         }
     }

@@ -14,6 +14,9 @@ public interface WeatherService {
     // 클라이언트 측에서 요청 시 DB에서 날씨 정보를 조회하는 메서드
     WeatherDto getWeatherForecast(Long mountainId);
 
-    //db에 있는 모든 산에 대해 날씨정보 업데이트하는 메서드
+    //db에 있는 모든 산에 대해 날씨정보 생성하는 메서드
     void saveAllWeatherData();
+
+    //db에 있는 모든 산에 대해 날씨정보 추가하는 메서드
+    void updateAllWeatherData() throws JSONException;
 }
