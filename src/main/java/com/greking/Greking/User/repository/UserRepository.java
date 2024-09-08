@@ -11,5 +11,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
     //기존 회원 email 존재하는지 check
     Optional<User> findByEmail(String email);
 
+    Optional<User> findByUserid(String userid);
+
     boolean existsByNickname(String nickname);
+
+    //회원삭제
+    void deleteByUserid(String userid);
+
 }

@@ -17,7 +17,5 @@ public class SurveyResult {
     private int questionAnswer3;
     @NotNull
     private int questionAnswer4;
-    @NotNull
-    private int questionAnswer5;
 
 }

@@ -56,7 +56,7 @@ public class ReviewServiceImpl implements ReviewService{
     //사용자 찾기 -> 사용자의 유저코스 찾기 -> 사용자의 유저코스의 작성된 리뷰 찾기
     @Override
     @Transactional
-    public ReviewDto getReview(Long userId, Long userCourseId) {
+    public ReviewDto getReview(String userId, Long userCourseId) {
         User user = userService.getUserById(userId);
         UserCourse userCourse = userCourseRepository.findById(userCourseId)
                 .orElseThrow(() -> new RuntimeException("해당 ID의 코스를 찾을 수 없습니다."));
@@ -69,10 +69,10 @@ public class ReviewServiceImpl implements ReviewService{
     //리뷰생성
     @Override
     @Transactional
-    public Review createReview(Long userId, Long userCourseId,
+    public Review createReview(String userId, Long userCourseId,
                                int review_score, String review_difficulty, String review_text) {
 
-        User user = userRepository.findById(userId)
+        User user = userRepository.findByUserid(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         UserCourse userCourse = userCourseRepository.findById(userCourseId)

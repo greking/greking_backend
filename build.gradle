@@ -45,8 +45,15 @@ dependencies {
 	implementation 'jakarta.validation:jakarta.validation-api:3.0.0'
 	// Hibernate Validator
 	implementation 'org.hibernate.validator:hibernate-validator:7.0.1.Final'
+
 	// EL (Expression Language) API, Hibernate Validator가 필요로 함
 	implementation 'org.glassfish:jakarta.el:4.0.2'
+
+	//JWT
+	implementation 'org.springframework:spring-context'
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
 	// JPA API
 	implementation group: 'org.postgresql', name:'postgresql', version: '42.7.3'

@@ -4,9 +4,10 @@ import com.greking.Greking.Contents.domain.Course;
 import com.greking.Greking.Contents.repository.CourseRepository;
 import com.greking.Greking.User.domain.User;
 import com.greking.Greking.User.domain.UserCourse;
-import com.greking.Greking.User.repository.PasswordResetTokenRepository;
 import com.greking.Greking.User.repository.UserCourseRepository;
 import com.greking.Greking.User.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,24 +17,26 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+
 @Service
 public class UserServiceImpl implements UserService {
 
+    private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
     private final UserCourseRepository userCourseRepository;
     private final CourseRepository courseRepository;
     private final BCryptPasswordEncoder passwordEncoder;
-    private final PasswordResetTokenRepository tokenRepository;
-
     private final GradeService gradeService;
 
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, UserCourseRepository userCourseRepository, CourseRepository courseRepository, BCryptPasswordEncoder passwordEncoder, PasswordResetTokenRepository tokenRepository, GradeService gradeService) {
+    public UserServiceImpl(JwtTokenProvider jwtTokenProvider, UserRepository userRepository, UserCourseRepository userCourseRepository, CourseRepository courseRepository, BCryptPasswordEncoder passwordEncoder, GradeService gradeService) {
+        this.jwtTokenProvider = jwtTokenProvider;
         this.userRepository = userRepository;
         this.userCourseRepository = userCourseRepository;
         this.courseRepository = courseRepository;
         this.passwordEncoder = passwordEncoder;
-        this.tokenRepository = tokenRepository;
         this.gradeService = gradeService;
     }
 
@@ -44,34 +47,59 @@ public class UserServiceImpl implements UserService {
     public User registerUser(User user) throws Exception {
         validateUser(user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        logger.info("User {} registered", user);
         return userRepository.save(user);
     }
 
-
-    //회원정보 가져오기
+    // 회원정보 가져오기
     @Override
-    public User getUserById(Long userId) {
-        return userRepository.findById(userId)
+    public User getUserById(String userId) {
+        return userRepository.findByUserid(userId)
                 .orElseThrow(() -> new RuntimeException("해당 ID의 유저를 찾을 수 없습니다."));
     }
 
+    public User getUserByEmail(String email){
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("해당 email의 유저를 찾을 수 없습니다."));
+    }
 
+
+    // 로그인로직 구현
+    @Override
+    public String login(String userId, String email, String password) {
+        User user;
+
+        if (userId != null && !userId.isEmpty()) {
+            user = userRepository.findByUserid(userId)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+        } else {
+            user = userRepository.findByEmail(email)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+        }
+
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new RuntimeException("Invalid password");
+        }
+
+        // JWT 토큰 생성 및 반환 (JWT 토큰 로직 추가 필요)
+        return jwtTokenProvider.createToken(user.getUserid(), user.getEmail());
+    }
+
+
+    // 회원 삭제
     @Override
     @Transactional
-    public void deleteUser(Long userId) {
-        Optional<User> userOptional = userRepository.findById(userId);
+    public void deleteUser(String userId) {
+        Optional<User> userOptional = userRepository.findByUserid(userId);
         if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            tokenRepository.deleteByUser(user); // 관련된 비밀번호 재설정 토큰 삭제
-            userRepository.deleteById(userId); // 사용자 삭제
-            System.out.println("User with ID " + userId + " deleted.");
+            userRepository.deleteByUserid(userId); // 사용자 삭제
+            logger.info("User with ID {} deleted", userId);
         } else {
             throw new IllegalArgumentException("User not found.");
         }
     }
 
-
-    //회원 있는지 유효성 검증
+    // 회원 유효성 검증
     private void validateUser(User user) throws Exception {
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new Exception("Email already exists.");
@@ -81,44 +109,42 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    //닉네임 있는지 유효성 검증
+    // 닉네임 중복 검사
     @Override
     public boolean validateNickname(String nickname) {
+        logger.info("Validating user nickname {}", nickname);
         return userRepository.existsByNickname(nickname);
     }
 
-
-
-    //회원 코스 찾기
+    // 회원의 코스 목록 가져오기
     @Override
-    public List<UserCourse> getMyCourse(Long userId) {
+    public List<UserCourse> getMyCourse(String userId) {
         User user = getUserById(userId);
         return userCourseRepository.findByUser(user);
     }
 
-    //회원 코스 담기
+    // 회원 코스 추가
     @Override
     @Transactional
-    public UserCourse addCourseToMyCourse(Long userId, Long courseId) {
+    public UserCourse addCourseToMyCourse(String userId, Long courseId) {
         User user = getUserById(userId);
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new IllegalArgumentException("Course not found"));
 
         UserCourse userCourse = new UserCourse();
-
         userCourse.setCourseName(course.getCourseName());
         userCourse.setDifficulty(course.getDifficulty());
         userCourse.setUser(user);
         userCourse.setCourse(course);
         userCourse.setAddedAt(LocalDateTime.now());
+
         return userCourseRepository.save(userCourse);
     }
 
-
-    //회원 코스 삭제
+    // 회원 코스 삭제
     @Override
     @Transactional
-    public void deleteCourseToMyCourse(Long userId, Long userCourseId) {
+    public void deleteCourseToMyCourse(String userId, Long userCourseId) {
         UserCourse userCourse = userCourseRepository.findById(userCourseId)
                 .orElseThrow(() -> new IllegalArgumentException("UserCourse not found"));
 
@@ -130,12 +156,10 @@ public class UserServiceImpl implements UserService {
         userCourseRepository.delete(userCourse);
     }
 
-    //등산 완료
+    // 등산 완료
     @Override
-    public void completeHiking(Long userId, Long userCourseId, String distance, String calories, String duration, String altitude) {
-
+    public void completeHiking(String userId, Long userCourseId, String distance, String calories, String duration, String altitude) {
         User user = getUserById(userId);
-
         UserCourse userCourse = userCourseRepository.findById(userCourseId)
                 .orElseThrow(() -> new IllegalArgumentException("UserCourse not found"));
 
@@ -144,11 +168,10 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("UserCourse does not belong to the specified user");
         }
 
-        //코스 난이도에 따른 레벨업
-        //1번 완료된것은 클라측에서 제어 (따로 예외처리 X)
+        // 코스 난이도에 따른 레벨업
         gradeService.addExperience(user.getGrade(), userCourse.getDifficulty());
 
-        userCourse.setStatus("완료"); //status를 "완료"로 업데이트
+        userCourse.setStatus("완료");
         userCourse.setAltitude(altitude);
         userCourse.setDistance(distance);
         userCourse.setCalories(calories);
@@ -157,3 +180,4 @@ public class UserServiceImpl implements UserService {
         userCourseRepository.save(userCourse);
     }
 }
+

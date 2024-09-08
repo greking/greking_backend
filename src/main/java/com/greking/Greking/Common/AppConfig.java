@@ -1,19 +1,11 @@
 package com.greking.Greking.Common;
 
-import com.greking.Greking.Contents.repository.CourseRepository;
-import com.greking.Greking.Contents.repository.MountainRepository;
 import com.greking.Greking.Contents.service.*;
 import com.greking.Greking.Survey.service.SurveyService;
 import com.greking.Greking.Survey.service.SurveyServiceImpl;
-import com.greking.Greking.User.repository.UserCourseRepository;
 import com.greking.Greking.User.repository.UserRepository;
-import com.greking.Greking.User.repository.PasswordResetTokenRepository;
-import com.greking.Greking.User.service.EmailService;
-import com.greking.Greking.User.service.UserService;
-import com.greking.Greking.User.service.UserServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.client.RestTemplate;
 

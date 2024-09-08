@@ -13,7 +13,5 @@ public interface SurveyService {
     //설문조사를 통한 피트니스 레벨 지정
     FitnessLevel calculrateLevel(int value);
 
-
-    //
-    void registerUserlevel(Long userid, SurveyResult result);
+    void registerUserlevel(String userid, SurveyResult result);
 }

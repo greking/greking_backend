@@ -6,7 +6,6 @@ import com.greking.Greking.Review.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,7 +25,7 @@ public class ReviewController {
 
     //리뷰 저장
     @PostMapping("/{userId}/{userCourseId}")
-    public ResponseEntity<?> createReview(@PathVariable(name = "userId") Long userId, @PathVariable(name="userCourseId") Long userCourseId,
+    public ResponseEntity<?> createReview(@PathVariable(name = "userId") String userId, @PathVariable(name="userCourseId") Long userCourseId,
                                           @RequestBody Map<String, String> params){
         try{
             int review_score = Integer.parseInt(params.get("review_score"));
@@ -66,9 +65,10 @@ public class ReviewController {
 
     //리뷰 조회
     @GetMapping("/{userId}/{userCourseId}")
-    public ResponseEntity<ReviewDto> getReview(@PathVariable(name = "userId") Long userId, @PathVariable(name = "userCourseId") Long userCourseId){
+    public ResponseEntity<ReviewDto> getReview(@PathVariable(name = "userId") String userId, @PathVariable(name = "userCourseId") Long userCourseId){
         try{
-            ReviewDto review = reviewService.getReview(userId, userCourseId);
+            ReviewDto review;
+            review = reviewService.getReview(userId, userCourseId);
             return ResponseEntity.ok(review);
         } catch (Exception e){
             System.out.println("Error occurred while fetching review: " + e.getMessage());

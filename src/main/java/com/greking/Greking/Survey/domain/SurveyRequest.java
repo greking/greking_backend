@@ -9,7 +9,7 @@ import lombok.Setter;
 public class SurveyRequest {
 
     @NotNull
-    private Long userId;
+    private String userId;
 
     @NotNull
     private SurveyResult surveyResult;

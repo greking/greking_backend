@@ -45,11 +45,11 @@ public class SurveyServiceImpl implements SurveyService {
     public FitnessLevel calculrateLevel(int value){
         if (value >= 1 && value <= 4) {
             return FitnessLevel.LEVEL1;
-        } else if (value >= 5 && value <= 9) {
+        } else if (value >= 5 && value <= 8) {
             return FitnessLevel.LEVEL2;
-        } else if (value >= 10 && value <= 14) {
+        } else if (value >= 9 && value <= 12) {
             return FitnessLevel.LEVEL3;
-        } else if (value >= 15 && value <= 18) {
+        } else if (value >= 13 && value <= 16) {
             return FitnessLevel.LEVEL4;
         } else {
             return FitnessLevel.LEVEL5;
@@ -58,8 +58,8 @@ public class SurveyServiceImpl implements SurveyService {
 
     @Override
     @Transactional
-    public void registerUserlevel(Long userId, SurveyResult result) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+    public void registerUserlevel(String userId, SurveyResult result) {
+        User user = userRepository.findByUserid(userId).orElseThrow(() -> new RuntimeException("User not found"));
 
         int totalScore = calculrateScore(result);
         FitnessLevel fitnessLevel = calculrateLevel(totalScore);

@@ -1,6 +1,10 @@
 # Created by https://www.toptal.com/developers/gitignore/api/macos,java,intellij,database,gradle,windows,git,maven,eclipse,netbeans,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,java,intellij,database,gradle,windows,git,maven,eclipse,netbeans,visualstudiocode
 
+
+### 환경변수파일 ###
+.env
+
 ### Database ###
 *.accdb
 *.db

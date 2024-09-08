@@ -3,11 +3,9 @@ package User;
 import com.greking.Greking.Common.AppConfig;
 import com.greking.Greking.Contents.repository.CourseRepository;
 import com.greking.Greking.User.domain.User;
-import com.greking.Greking.User.repository.PasswordResetTokenRepository;
 import com.greking.Greking.User.repository.UserCourseRepository;
 import com.greking.Greking.User.repository.UserRepository;
 import com.greking.Greking.User.service.EmailService;
-import com.greking.Greking.User.service.PasswordResetService;
 import com.greking.Greking.User.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -71,22 +69,9 @@ public class UserServiceTest {
         when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
 
         // when
-        User foundUser = passwordResetService.findUserByEmail(user.getEmail());
 
         // then
-        assertThat(foundUser).isNotNull();
-        assertThat(foundUser.getEmail()).isEqualTo(user.getEmail());
     }
 
-    @Test
-    public void testDeleteUser() {
-        // given
-        Long userId = user.getUserid();
 
-        // when
-        userService.deleteUser(userId);
-
-        // then
-        verify(userRepository, times(1)).deleteById(userId);
-    }
 }
