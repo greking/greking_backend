@@ -48,7 +48,7 @@ public class CourseServiceImpl implements CourseService {
 
     private CourseDto convertToDto(Course course) {
         return CourseDto.builder()
-                .id(course.getId())
+                .courseId(course.getCourseId())
                 .courseName(course.getCourseName())
                 .information(course.getInformation())
                 .course_info(course.getCourse_info())

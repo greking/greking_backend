@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RestaurantDto {
-    private Long id;
+    private Long restaurantId;
     private String restaurant_name;
     private String tel;
     private String address;

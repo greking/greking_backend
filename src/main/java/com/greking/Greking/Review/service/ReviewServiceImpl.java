@@ -46,7 +46,7 @@ public class ReviewServiceImpl implements ReviewService{
 
     @Override
     public List<ReviewDto> getReviewWithCourse(Long courseId) {
-        List<Review> review = reviewRepository.findByCourseId(courseId);
+        List<Review> review = reviewRepository.findByCourseCourseId(courseId);
         return review.stream() //리스트 'review'에서 스트림을 생성
                 .map(this::convertToDto) //각 review 객체를 reviewDto로 변환
                 .collect(Collectors.toList()); //
@@ -99,7 +99,7 @@ public class ReviewServiceImpl implements ReviewService{
 
     private ReviewDto convertToDto(Review review) {
         return ReviewDto.builder()
-                .id(review.getId())
+                .reviewId(review.getReviewId())
                 .review_score(review.getReview_score())
                 .review_difficulty(review.getReview_difficulty())
                 .review_text(review.getReview_text())

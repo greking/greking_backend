@@ -14,8 +14,7 @@ import java.time.LocalDateTime;
 public class Weather {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long weatherId;
 
     @ManyToOne
     @JoinColumn(name = "mountain_id") // 외래키 칼럼 이름 지정

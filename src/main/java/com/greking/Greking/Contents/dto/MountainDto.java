@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MountainDto {
 
-    private Long id;
+    private Long mountainId;
     private String name;
     private String addressState; //대표도시
 

@@ -75,7 +75,7 @@ public class WeatherServiceImpl implements WeatherService {
 
     private WeatherDto convertToDto(Weather weather) {
         return WeatherDto.builder()
-                .id(weather.getId())
+                .weatherId(weather.getWeatherId())
                 .mountainName(weather.getMountainName())
                 .addressState(weather.getAddressState())
                 .tmFc(weather.getTmFc())
@@ -123,11 +123,11 @@ public class WeatherServiceImpl implements WeatherService {
         for (Mountain mountain : mountains){
             try{
                 // 중복 여부를 확인하기 위한 로직 추가
-                boolean exists = weatherRepository.existsByMountainId(mountain.getId());
+                boolean exists = weatherRepository.existsByMountainMountainId(mountain.getMountainId());
 
                 if (!exists) {
                     // 날씨 정보가 없는 경우에만 데이터를 저장
-                    saveWeatherData(mountain.getId());
+                    saveWeatherData(mountain.getMountainId());
                 } else {
                     System.out.println("Weather data already exists for mountain: " + mountain.getName());
                 }

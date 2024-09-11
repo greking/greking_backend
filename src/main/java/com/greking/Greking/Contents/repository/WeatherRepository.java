@@ -13,5 +13,5 @@ public interface WeatherRepository extends JpaRepository<Weather, Long> {
 
     Weather findByMountain(Mountain mountain);
 
-    boolean existsByMountainId(Long id);
+    boolean existsByMountainMountainId(Long id);
 }

@@ -2,6 +2,7 @@ package com.greking.Greking.User.controller;
 
 import com.greking.Greking.User.domain.User;
 import com.greking.Greking.User.domain.UserCourse;
+import com.greking.Greking.User.repository.UserRepository;
 import com.greking.Greking.User.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +20,16 @@ import java.util.Map;
 public class UserController {
 
 
-    @Autowired
     private UserService userService;
 
+    private UserRepository userRepository;
+
+
+    @Autowired
+    public UserController(UserService userService, UserRepository userRepository) {
+        this.userService = userService;
+        this.userRepository = userRepository;
+    }
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody User user, BindingResult result) {
@@ -49,10 +57,14 @@ public class UserController {
             String email = loginRequest.get("email");
             String password = loginRequest.get("password");
 
+            User user = userRepository.findByUserid(userid)
+                    .orElseThrow(() -> new RuntimeException("user is not found"));
+
             //로그인 로직 처리 및 JWT토큰 생성
             String token = userService.login(userid, email, password);
 
             Map<String, String> response = new HashMap<>();
+            response.put("nickname", user.getNickname()); //nickname반환
             response.put("token", token); //JWT 토큰 반환
 
             return new ResponseEntity<>(response, HttpStatus.OK);

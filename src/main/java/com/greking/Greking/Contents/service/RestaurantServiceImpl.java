@@ -35,7 +35,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
         for (Course course : courses) {
             try {
-                saveRestaurantData(course.getId());
+                saveRestaurantData(course.getCourseId());
             } catch (JSONException e) {
                 System.out.println("Failed to fetch Restaurant data for mountain: " + course.getCourseName() + " - " + e.getMessage());
             }
@@ -50,7 +50,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
 
         // 이미 등록된 식당의 수를 확인 (최대 10개)
-        long restaurantCount = restaurantRepository.countByMountainId(courseId);
+        long restaurantCount = restaurantRepository.countByMountainMountainId(courseId);
         if (restaurantCount >= 10) {
             System.out.println("이미 최대 10개의 식당이 등록되어 있습니다.");
             return;
@@ -124,7 +124,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     public List<RestaurantDto> getRestaurantsByCourse(Long courseId) {
-        List<Restaurant> restaurants = restaurantRepository.findByCourseId(courseId);
+        List<Restaurant> restaurants = restaurantRepository.findByCourseCourseId(courseId);
         return restaurants.stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
@@ -132,7 +132,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     private RestaurantDto convertToDto(Restaurant restaurant) {
         return RestaurantDto.builder()
-                .id(restaurant.getId())
+                .restaurantId(restaurant.getRestaurantId())
                 .restaurant_name(restaurant.getName())
                 .tel(restaurant.getTel())
                 .address(restaurant.getAddress())

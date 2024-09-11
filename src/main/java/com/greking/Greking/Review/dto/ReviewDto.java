@@ -8,7 +8,8 @@ import lombok.*;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReviewDto {
-    private Long id;
+
+    private Long reviewId;
 
     private int review_score;
     private String review_difficulty;

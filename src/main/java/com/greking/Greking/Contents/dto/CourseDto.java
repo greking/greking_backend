@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CourseDto {
 
-    private Long id;
+    private Long courseId;
     private String mountainName; //산이름
     private String information; //산정보
 
@@ -20,7 +20,10 @@ public class CourseDto {
     private String distance; //구간길이
     private String duration; //소요시간
     private String altitude; //고도
+
+    @Builder.Default
     private double longitude = 0.0; //출발지 위도
+    @Builder.Default
     private double latitude = 0.0; //출발지 경도
     private String direction; //찾아오는길
 

@@ -17,8 +17,7 @@ import java.util.List;
 public class Course {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long courseId;
 
     //mountain FK
     @ManyToOne
@@ -44,10 +43,12 @@ public class Course {
 
     //경도
     @Column(nullable = false, columnDefinition = "float default 0.0")
+    @Builder.Default
     private double longitude = 0.0;
 
     //위도
     @Column(nullable = false, columnDefinition = "float default 0.0")
+    @Builder.Default
     private double latitude = 0.0;
 
 

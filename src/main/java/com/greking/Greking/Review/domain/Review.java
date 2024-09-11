@@ -17,8 +17,7 @@ public class Review {
     //id값, 리뷰, 별점, 난이도
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long reviewId;
 
     private int review_score;
     private String review_difficulty;

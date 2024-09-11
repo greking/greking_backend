@@ -37,7 +37,7 @@ public class MountainController {
         try{
             List<MountainDto> mountains = mountainService.getAllMountains().stream()
                     .map(mountain -> MountainDto.builder()
-                            .id(mountain.getId())
+                            .mountainId(mountain.getMountainId())
                             .name(mountain.getName())
                             .addressState(mountain.getAddressState())
                             .latitude(mountain.getLatitude())

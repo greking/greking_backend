@@ -24,6 +24,7 @@ public class JwtTokenProvider {
 
     private long expirationTimeInMillis;
 
+
     // JWT 토큰 생성자에서 만료 시간을 계산
     public JwtTokenProvider() {
         // 일수를 밀리초로 변환
@@ -41,12 +42,14 @@ public class JwtTokenProvider {
 
         SecretKey key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
 
-        return Jwts.builder()
+        String token = Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(validity)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
+
+        return token;
     }
 
     //JWT 토큰에서 사용자 이메일 추출

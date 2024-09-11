@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class WeatherDto {
 
-    private Long id;
+    private Long weatherId;
     private Mountain mountain;
 
     private String westEastCode; //지역별 날씨상태, 강수확률가져오기

@@ -40,7 +40,7 @@ public class MountainServiceImpl implements MountainService{
 
     private MountainDto convertToDto(Mountain mountain){
         return MountainDto.builder()
-                .id(mountain.getId())
+                .mountainId(mountain.getMountainId())
                 .name(mountain.getName())
                 .addressState(mountain.getAddressState())
                 .cityCode(mountain.getCityCode())

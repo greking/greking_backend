@@ -12,8 +12,7 @@ import java.util.List;
 @Setter
 public class Restaurant {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long restaurantId;
 
     @ManyToOne
     @JoinColumn(name = "mountain_id") //외래키 칼럼이름 지정

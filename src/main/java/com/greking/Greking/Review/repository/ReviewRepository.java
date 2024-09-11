@@ -13,7 +13,7 @@ public interface ReviewRepository extends JpaRepository<Review,Long> {
 
     Optional<Review> findByUserAndUserCourse(User user, UserCourse UserCourse);
 
-    List<Review> findByCourseId(Long courseId);
+    List<Review> findByCourseCourseId(Long courseId);
 
     List<ReviewDto> findByUser(User user);
 
