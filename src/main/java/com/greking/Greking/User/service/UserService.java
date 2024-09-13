@@ -23,8 +23,12 @@ public interface UserService {
     boolean validateNickname(String nickname);
 
 
-    //회원 코스정보 가져오기
-    List<UserCourse> getMyCourse(String userId);
+    //회원 코스정보 - 예정
+    List<UserCourse> getMyExpectedCourse(String userId);
+
+    //회원 코스정보 - 완료
+    List<UserCourse> getMyCompleteCourse(String userId);
+
 
     //회원 코스정보 담기
     UserCourse addCourseToMyCourse(String userId, Long courseId);

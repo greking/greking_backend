@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -116,12 +117,30 @@ public class UserServiceImpl implements UserService {
         return userRepository.existsByNickname(nickname);
     }
 
-    // 회원의 코스 목록 가져오기
+    // 회원 코스 - 예정가져오기
     @Override
-    public List<UserCourse> getMyCourse(String userId) {
+    public List<UserCourse> getMyExpectedCourse(String userId) {
         User user = getUserById(userId);
-        return userCourseRepository.findByUser(user);
+        List<UserCourse> userCourses = userCourseRepository.findByUser(user);
+
+        //stream api활용해서 특정값만 가져오기
+        return userCourses.stream()
+                .filter(userCourse -> "예정".equals(userCourse.getStatus()))
+                .collect(Collectors.toList());
     }
+
+    // 회원 코스 - 완료가져오기
+    @Override
+    public List<UserCourse> getMyCompleteCourse(String userId) {
+        User user = getUserById(userId);
+        List<UserCourse> userCourses = userCourseRepository.findByUser(user);
+
+        return userCourses.stream()
+                .filter(userCourse -> "완료".equals(userCourse.getStatus()))
+                .collect(Collectors.toList());
+
+    }
+
 
     // 회원 코스 추가
     @Override

@@ -12,6 +12,7 @@ import java.util.List;
 @Setter
 public class Restaurant {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long restaurantId;
 
     @ManyToOne

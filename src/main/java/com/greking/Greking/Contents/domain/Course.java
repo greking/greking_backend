@@ -17,6 +17,7 @@ import java.util.List;
 public class Course {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long courseId;
 
     //mountain FK
@@ -41,12 +42,12 @@ public class Course {
     private String distance; //구간길이
     private String altitude; //고도
 
-    //경도
+    //코스의 경도
     @Column(nullable = false, columnDefinition = "float default 0.0")
     @Builder.Default
     private double longitude = 0.0;
 
-    //위도
+    //코스의 위도
     @Column(nullable = false, columnDefinition = "float default 0.0")
     @Builder.Default
     private double latitude = 0.0;

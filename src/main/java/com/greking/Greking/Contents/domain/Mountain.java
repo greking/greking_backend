@@ -17,6 +17,7 @@ import java.util.List;
 public class Mountain {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long mountainId;
     private String name;
 

@@ -67,6 +67,8 @@ public class UserController {
             response.put("nickname", user.getNickname()); //nickname반환
             response.put("token", token); //JWT 토큰 반환
 
+            System.out.println(user.getNickname() + user.getEmail());
+
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -116,16 +118,28 @@ public class UserController {
     }
 
 
-    //유저 코스 가져오기
-    @GetMapping("/{userId}/my-courses")
-    public ResponseEntity<?> getMyCourse(@PathVariable(name = "userId") String userId){
+    //유저 코스 - 예정 가져오기
+    @GetMapping("/{userId}/my-courses/expected")
+    public ResponseEntity<?> getMyExpectedCourse(@PathVariable(name = "userId") String userId){
         try{
-            List<UserCourse> userCourses = userService.getMyCourse(userId);
+            List<UserCourse> userCourses = userService.getMyExpectedCourse(userId);
             return new ResponseEntity<>(userCourses, HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    //유저코스 - 완료 가져오기
+    @GetMapping("/{userId}/my-courses/complete")
+    public ResponseEntity<?> getMyCompleteCourse(@PathVariable(name = "userId") String userId){
+        try{
+            List<UserCourse> userCourses = userService.getMyCompleteCourse(userId);
+            return new ResponseEntity<>(userCourses, HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
     //유저 코스 삭제하기
     @DeleteMapping("/{userId}/my-courses/{userCourseId}")

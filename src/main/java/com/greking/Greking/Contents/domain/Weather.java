@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 public class Weather {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long weatherId;
 
     @ManyToOne
