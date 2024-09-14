@@ -2,6 +2,7 @@ package com.greking.Greking.User.service;
 
 import com.greking.Greking.User.domain.User;
 import com.greking.Greking.User.domain.UserCourse;
+import com.greking.Greking.User.dto.UserCourseDto;
 
 import java.util.List;
 
@@ -24,10 +25,10 @@ public interface UserService {
 
 
     //회원 코스정보 - 예정
-    List<UserCourse> getMyExpectedCourse(String userId);
+    List<UserCourseDto> getMyExpectedCourse(String userId);
 
     //회원 코스정보 - 완료
-    List<UserCourse> getMyCompleteCourse(String userId);
+    List<UserCourseDto> getMyCompleteCourse(String userId);
 
 
     //회원 코스정보 담기

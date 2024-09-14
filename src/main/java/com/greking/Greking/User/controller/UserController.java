@@ -2,6 +2,7 @@ package com.greking.Greking.User.controller;
 
 import com.greking.Greking.User.domain.User;
 import com.greking.Greking.User.domain.UserCourse;
+import com.greking.Greking.User.dto.UserCourseDto;
 import com.greking.Greking.User.repository.UserRepository;
 import com.greking.Greking.User.service.UserService;
 import jakarta.validation.Valid;
@@ -123,7 +124,7 @@ public class UserController {
     @GetMapping("/{userId}/my-courses/expected")
     public ResponseEntity<?> getMyExpectedCourse(@PathVariable(name = "userId") String userId){
         try{
-            List<UserCourse> userCourses = userService.getMyExpectedCourse(userId);
+            List<UserCourseDto> userCourses = userService.getMyExpectedCourse(userId);
             return new ResponseEntity<>(userCourses, HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -134,7 +135,7 @@ public class UserController {
     @GetMapping("/{userId}/my-courses/complete")
     public ResponseEntity<?> getMyCompleteCourse(@PathVariable(name = "userId") String userId){
         try{
-            List<UserCourse> userCourses = userService.getMyCompleteCourse(userId);
+            List<UserCourseDto> userCourses = userService.getMyCompleteCourse(userId);
             return new ResponseEntity<>(userCourses, HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

@@ -4,6 +4,7 @@ import com.greking.Greking.Contents.domain.Course;
 import com.greking.Greking.Contents.repository.CourseRepository;
 import com.greking.Greking.User.domain.User;
 import com.greking.Greking.User.domain.UserCourse;
+import com.greking.Greking.User.dto.UserCourseDto;
 import com.greking.Greking.User.repository.UserCourseRepository;
 import com.greking.Greking.User.repository.UserRepository;
 import org.slf4j.Logger;
@@ -119,26 +120,44 @@ public class UserServiceImpl implements UserService {
 
     // 회원 코스 - 예정가져오기
     @Override
-    public List<UserCourse> getMyExpectedCourse(String userId) {
+    public List<UserCourseDto> getMyExpectedCourse(String userId) {
         User user = getUserById(userId);
         List<UserCourse> userCourses = userCourseRepository.findByUser(user);
 
         //stream api활용해서 특정값만 가져오기
         return userCourses.stream()
+                .map(this::convertToDto)
                 .filter(userCourse -> "예정".equals(userCourse.getStatus()))
                 .collect(Collectors.toList());
     }
 
     // 회원 코스 - 완료가져오기
     @Override
-    public List<UserCourse> getMyCompleteCourse(String userId) {
+    public List<UserCourseDto> getMyCompleteCourse(String userId) {
         User user = getUserById(userId);
         List<UserCourse> userCourses = userCourseRepository.findByUser(user);
 
         return userCourses.stream()
+                .map(this::convertToDto)
                 .filter(userCourse -> "완료".equals(userCourse.getStatus()))
                 .collect(Collectors.toList());
 
+    }
+
+
+    private UserCourseDto convertToDto(UserCourse userCourse) {
+        return UserCourseDto.builder()
+                .userCourseId(userCourse.getUserCourseId())
+                .course(userCourse.getCourse())
+                .difficulty(userCourse.getDifficulty())
+                .addedAt(userCourse.getAddedAt())
+                .distance(userCourse.getDistance())
+                .calories(userCourse.getCalories())
+                .duration(userCourse.getDuration())
+                .courseName(userCourse.getCourseName())
+                .altitude(userCourse.getAltitude())
+                .status(userCourse.getStatus())
+                .build();
     }
 
 

@@ -43,7 +43,6 @@ public class UserCourse {
 
     private String courseName; //코스명
 
-    @Column(name = "altitude")
     private String altitude; //움직인 고도
 
 

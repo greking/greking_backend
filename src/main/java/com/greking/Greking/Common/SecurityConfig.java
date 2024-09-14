@@ -52,6 +52,7 @@ public class SecurityConfig {
 
                         .requestMatchers("/api/users/{userId}/my-courses/{courseId}").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/users/{userId}/my-courses").permitAll()
+
                         .requestMatchers("/api/users/{userId}/my-courses/{userCourseId}").permitAll()
 
                         .requestMatchers("/api/users/{userId}/my-courses/{userCourseId}/complete").permitAll()
