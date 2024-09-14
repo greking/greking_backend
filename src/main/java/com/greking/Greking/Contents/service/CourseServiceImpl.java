@@ -39,6 +39,15 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public List<CourseDto> getCourseByMountain(String mountainName) {
+        List<Course> course = courseRepository.findByMountainName(mountainName);
+
+        return course.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<CourseDto> getAllCourses() {
         List<Course> courses = courseRepository.findAll();
         return courses.stream()
@@ -50,6 +59,7 @@ public class CourseServiceImpl implements CourseService {
         return CourseDto.builder()
                 .courseId(course.getCourseId())
                 .courseName(course.getCourseName())
+                .mountainName(course.getMountainName())
                 .information(course.getInformation())
                 .course_info(course.getCourse_info())
                 .courseImage(course.getCourseImage())

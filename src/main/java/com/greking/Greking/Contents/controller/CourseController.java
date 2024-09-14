@@ -36,10 +36,10 @@ public class CourseController {
     }
 
     //산에 따른 모든 코스정보 가져오기
-    @GetMapping("/getCourse")
-    public ResponseEntity<CourseDto> getCourseByMountain(@RequestParam(name="mountainName") String mountainName){
+    @GetMapping("/getCourse/{mountainName}")
+    public ResponseEntity<List<CourseDto>> getCourseByMountain(@PathVariable(name="mountainName") String mountainName){
         try{
-            CourseDto course = courseService.getCourseByMountain(mountainName);
+            List<CourseDto> course = courseService.getCourseByMountain(mountainName);
             return ResponseEntity.ok(course);
         }   catch (Exception e){
             System.out.println("Error occurred while fetching course: " + e.getMessage());

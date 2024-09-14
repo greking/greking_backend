@@ -15,6 +15,8 @@ public interface CourseService {
     //모든 코스 정보 가져오기
     CourseDto getCourseById(Long courseId);
 
+    List<CourseDto> getCourseByMountain(String mountainName);
+
     List<CourseDto> getAllCourses();
 
     //비공개 api

@@ -48,6 +48,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/users/login").permitAll()
                         .requestMatchers("/api/survey/submit").permitAll()
 
+                        .requestMatchers(HttpMethod.GET, "/api/courses/getCourse/{mountainName}").permitAll()
+
                         .requestMatchers("/api/users/{userId}/my-courses/{courseId}").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/users/{userId}/my-courses").permitAll()
                         .requestMatchers("/api/users/{userId}/my-courses/{userCourseId}").permitAll()
