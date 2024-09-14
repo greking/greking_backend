@@ -145,10 +145,9 @@ public class UserServiceImpl implements UserService {
     // 회원 코스 추가
     @Override
     @Transactional
-    public UserCourse addCourseToMyCourse(String userId, Long courseId) {
+    public UserCourse addCourseToMyCourse(String userId, String courseName) {
         User user = getUserById(userId);
-        Course course = courseRepository.findById(courseId)
-                .orElseThrow(() -> new IllegalArgumentException("Course not found"));
+        Course course = courseRepository.findByCourseName(courseName);
 
         UserCourse userCourse = new UserCourse();
         userCourse.setCourseName(course.getCourseName());

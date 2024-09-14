@@ -11,5 +11,7 @@ import java.util.List;
 public interface CourseRepository extends JpaRepository<Course, Long> {
     Course findByMountain(Mountain mountain);
 
+    Course findByCourseName(String coursename);
+
     List<Course> findByDifficulty(String difficulty);
 }

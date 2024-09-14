@@ -31,7 +31,7 @@ public interface UserService {
 
 
     //회원 코스정보 담기
-    UserCourse addCourseToMyCourse(String userId, Long courseId);
+    UserCourse addCourseToMyCourse(String userId, String courseName);
 
 
     //회원 코스정보 삭제

@@ -107,10 +107,11 @@ public class UserController {
 
 
     //유저 코스 등록하기
-    @PostMapping("/{userId}/my-courses/{courseId}")
-    public ResponseEntity<?> addCourseToMyCourses(@PathVariable (name = "userId") String userId, @PathVariable (name = "courseId") Long courseId) {
+    @PostMapping("/{userId}/my-courses/{courseName}")
+    public ResponseEntity<?> addCourseToMyCourses(@PathVariable (name = "userId") String userId, @PathVariable (name = "courseName") String courseName) {
         try {
-            UserCourse userCourse = userService.addCourseToMyCourse(userId, courseId);
+            UserCourse userCourse = userService.addCourseToMyCourse(userId, courseName);
+
             return new ResponseEntity<>(userCourse, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

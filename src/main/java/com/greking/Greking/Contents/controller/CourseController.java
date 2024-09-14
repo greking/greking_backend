@@ -35,6 +35,18 @@ public class CourseController {
         }
     }
 
+    //산에 따른 모든 코스정보 가져오기
+    @GetMapping("/getCourse")
+    public ResponseEntity<CourseDto> getCourseByMountain(@RequestParam(name="mountainName") String mountainName){
+        try{
+            CourseDto course = courseService.getCourseByMountain(mountainName);
+            return ResponseEntity.ok(course);
+        }   catch (Exception e){
+            System.out.println("Error occurred while fetching course: " + e.getMessage());
+            return ResponseEntity.status(404).body(null); // 예외가 발생하면 404 응답
+        }
+    }
+
 
     @GetMapping("/all")
     public ResponseEntity<List<CourseDto>> getAllCourses(){
