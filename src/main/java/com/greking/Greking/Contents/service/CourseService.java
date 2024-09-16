@@ -5,6 +5,7 @@ import com.greking.Greking.Contents.domain.Course;
 import com.greking.Greking.Contents.dto.CourseDto;
 
 import java.util.List;
+import java.util.Map;
 
 public interface CourseService {
 
@@ -15,7 +16,7 @@ public interface CourseService {
     //모든 코스 정보 가져오기
     CourseDto getCourseById(Long courseId);
 
-    List<CourseDto> getCourseByMountain(String mountainName);
+    Map<String, Object> getCourseByMountain(String mountainName);
 
     List<CourseDto> getAllCourses();
 

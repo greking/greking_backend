@@ -10,7 +10,9 @@ import com.greking.Greking.Contents.repository.CourseRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -39,12 +41,18 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<CourseDto> getCourseByMountain(String mountainName) {
+    public Map<String, Object> getCourseByMountain(String mountainName) {
         List<Course> course = courseRepository.findByMountainName(mountainName);
 
-        return course.stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
+        List<CourseDto> courseDtoList = course.stream()
+                                            .map(this::convertToDto)
+                                            .collect(Collectors.toList());
+
+        // courses라는 key로 데이터를 담아 반환
+        Map<String, Object> response = new HashMap<>();
+        response.put("courses", courseDtoList);
+
+        return response;
     }
 
     @Override

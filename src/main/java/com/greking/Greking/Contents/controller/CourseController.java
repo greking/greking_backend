@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/courses")
@@ -37,9 +38,9 @@ public class CourseController {
 
     //산에 따른 모든 코스정보 가져오기
     @GetMapping("/getCourse/{mountainName}")
-    public ResponseEntity<List<CourseDto>> getCourseByMountain(@PathVariable(name="mountainName") String mountainName){
+    public ResponseEntity<Map<String, Object>> getCourseByMountain(@PathVariable(name="mountainName") String mountainName){
         try{
-            List<CourseDto> course = courseService.getCourseByMountain(mountainName);
+            Map<String, Object> course = courseService.getCourseByMountain(mountainName);
             return ResponseEntity.ok(course);
         }   catch (Exception e){
             System.out.println("Error occurred while fetching course: " + e.getMessage());
