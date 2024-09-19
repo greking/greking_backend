@@ -64,10 +64,9 @@ public class WeatherServiceImpl implements WeatherService {
     }
 
     @Override
-    public WeatherDto getWeatherForecast(Long mountainId) {
-        // 산의 id를 기반으로 DB에서 산을 조회
-        Mountain mountain = mountainRepository.findById(mountainId)
-                .orElseThrow(() -> new RuntimeException("해당 ID의 산을 찾을 수 없습니다."));
+    public WeatherDto getWeatherForecast(String mountainName) {
+        // 산 이름을 기반으로 DB에서 산을 조회
+        Mountain mountain = mountainRepository.findByName(mountainName);
 
         Weather weather = weatherRepository.findByMountain(mountain);
         return convertToDto(weather);

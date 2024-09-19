@@ -39,15 +39,24 @@ public class UserController {
             result.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
             return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
         }
+
+        // 닉네임 중복 체크
+        if (userService.validateNickname(user.getNickname())) {
+            Map<String, String> errors = new HashMap<>();
+            errors.put("nickname", "Nickname is already taken.");
+            return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+        }
+
         try {
             User registeredUser = userService.registerUser(user);
             Map<String, String> response = new HashMap<>();
-            response.put("message", "user regustered successfully");
+            response.put("message", "User registered successfully");
             return new ResponseEntity<>(registeredUser, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
 
     //login api
@@ -112,7 +121,7 @@ public class UserController {
     public ResponseEntity<?> addCourseToMyCourses(@PathVariable (name = "userId") String userId, @PathVariable (name = "courseName") String courseName) {
         try {
             UserCourse userCourse = userService.addCourseToMyCourse(userId, courseName);
-
+            System.out.println("userCourse.getUserCourseId() = " + userCourse.getUserCourseId());
             return new ResponseEntity<>(userCourse, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -158,18 +167,35 @@ public class UserController {
 
     //등산완료시 등산데이터 저장
     @PostMapping("/{userId}/my-courses/{userCourseId}/complete")
-    public ResponseEntity<?> completeHiking(@PathVariable(name="userId") String userId, @PathVariable(name="userCourseId") Long userCourseId,
-                                            @RequestBody Map<String, String> params){
-        try{
+    public ResponseEntity<Map<String, Object>> completeHiking(
+            @PathVariable(name = "userId") String userId,
+            @PathVariable(name = "userCourseId") Long userCourseId,
+            @RequestBody Map<String, String> params) {
+        try {
             String distance = params.get("distance");
             String calories = params.get("calories");
             String duration = params.get("duration");
             String altitude = params.get("altitude");
-            userService.completeHiking(userId,userCourseId,distance,calories,duration, altitude);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+
+            // 레벨업 여부를 받아온다
+            boolean leveledUp = userService.completeHiking(userId, userCourseId, distance, calories, duration, altitude);
+
+            User user = userService.getUserById(userId);
+
+            // 응답에 레벨업 여부를 포함한다
+            Map<String, Object> response = new HashMap<>();
+            response.put("levelUp", leveledUp);
+            response.put("message", "Hiking completed successfully");
+            response.put("now level", user.getGrade().getLevel());
+            response.put("experience", user.getGrade().getExperience());
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("message", e.getMessage());
+            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
 }

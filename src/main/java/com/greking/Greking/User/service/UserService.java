@@ -40,7 +40,7 @@ public interface UserService {
 
 
     //등산코스 완료
-    void completeHiking(String userId, Long userCourseId, String distance, String calories, String duration, String altitude);
+    boolean completeHiking(String userId, Long userCourseId, String distance, String calories, String duration, String altitude);
 
     User getUserByEmail(String email);
 

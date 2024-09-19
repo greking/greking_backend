@@ -11,7 +11,7 @@ public interface RestaurantService {
     void saveRestaurantData(Long courseId) throws JSONException;
 
     // 특정 산 주변의 식당 목록을 조회하는 메서드
-    List<RestaurantDto> getRestaurantsByCourse(Long courseId);
+    List<RestaurantDto> getRestaurantsByCourse(String courseName);
 
     void saveAllRestaurantData();
 }

@@ -195,7 +195,7 @@ public class UserServiceImpl implements UserService {
 
     // 등산 완료
     @Override
-    public void completeHiking(String userId, Long userCourseId, String distance, String calories, String duration, String altitude) {
+    public boolean completeHiking(String userId, Long userCourseId, String distance, String calories, String duration, String altitude) {
         User user = getUserById(userId);
         UserCourse userCourse = userCourseRepository.findById(userCourseId)
                 .orElseThrow(() -> new IllegalArgumentException("UserCourse not found"));
@@ -206,7 +206,8 @@ public class UserServiceImpl implements UserService {
         }
 
         // 코스 난이도에 따른 레벨업
-        gradeService.addExperience(user.getGrade(), userCourse.getDifficulty());
+        boolean leveledUp = gradeService.addExperience(user.getGrade(), userCourse.getDifficulty());
+
 
         userCourse.setStatus("완료");
         userCourse.setAltitude(altitude);
@@ -215,6 +216,8 @@ public class UserServiceImpl implements UserService {
         userCourse.setDuration(duration);
 
         userCourseRepository.save(userCourse);
+
+        return leveledUp;
     }
 }
 

@@ -12,7 +12,7 @@ public interface WeatherService {
     void saveWeatherData(Long mountainId) throws JSONException;
 
     // 클라이언트 측에서 요청 시 DB에서 날씨 정보를 조회하는 메서드
-    WeatherDto getWeatherForecast(Long mountainId);
+    WeatherDto getWeatherForecast(String mountainName);
 
     //db에 있는 모든 산에 대해 날씨정보 생성하는 메서드
     void saveAllWeatherData();

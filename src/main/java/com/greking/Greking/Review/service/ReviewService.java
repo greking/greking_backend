@@ -16,7 +16,7 @@ public interface ReviewService {
     List<ReviewDto> getAllReview();
 
     //코스별 리뷰가져오기
-    List<ReviewDto> getReviewWithCourse(Long courseId);
+    List<ReviewDto> getReviewWithCourse(String courseName);
 
     ReviewDto getReview(String userId, Long userCourseId);
 

@@ -3,7 +3,6 @@ package com.greking.Greking.User.repository;
 
 import com.greking.Greking.User.domain.User;
 import com.greking.Greking.User.domain.UserCourse;
-import com.greking.Greking.User.dto.UserCourseDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

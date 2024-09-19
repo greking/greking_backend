@@ -123,8 +123,8 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public List<RestaurantDto> getRestaurantsByCourse(Long courseId) {
-        List<Restaurant> restaurants = restaurantRepository.findByCourseCourseId(courseId);
+    public List<RestaurantDto> getRestaurantsByCourse(String courseName) {
+        List<Restaurant> restaurants = restaurantRepository.findByCourseCourseName(courseName);
         return restaurants.stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());

@@ -24,13 +24,12 @@ public class WeatherController {
 
     /**
      * 산의 주소를 기반으로 날씨 정보를 가져오는 엔드포인트
-     * @param mountainId 산의 id값
      * @return 해당 산의 날씨 정보
      */
-    @GetMapping("/getInfo")
-    public ResponseEntity<WeatherDto> getWeatherForecast(@RequestParam(name = "mountainId") Long mountainId) {
+    @GetMapping("/getInfo/{mountainName}")
+    public ResponseEntity<WeatherDto> getWeatherForecast(@PathVariable(name = "mountainName") String mountainName) {
         try {
-            WeatherDto weather = weatherService.getWeatherForecast(mountainId);
+            WeatherDto weather = weatherService.getWeatherForecast(mountainName);
             return ResponseEntity.ok(weather); // 데이터가 있을 경우 200 응답과 함께 데이터 반환
         } catch (Exception e) {
             System.out.println("Error occurred while fetching weather: " + e.getMessage());

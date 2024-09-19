@@ -21,10 +21,10 @@ public class RestaurantController {
         this.restaurantService = restaurantService;
     }
 
-    @GetMapping("/getInfo")
-    public ResponseEntity<List<RestaurantDto>> getRestaurantsByCourse(@RequestParam(name = "courseId") Long courseId) {
+    @GetMapping("/getInfo/{courseName}")
+    public ResponseEntity<List<RestaurantDto>> getRestaurantsByCourse(@PathVariable(name = "courseName") String courseName) {
         try {
-            List<RestaurantDto> restaurants = restaurantService.getRestaurantsByCourse(courseId);
+            List<RestaurantDto> restaurants = restaurantService.getRestaurantsByCourse(courseName);
             if (restaurants.isEmpty()) {
                 return ResponseEntity.noContent().build(); // 데이터가 없을 경우 204 응답
             }

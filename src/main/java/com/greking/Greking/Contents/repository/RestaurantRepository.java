@@ -16,6 +16,5 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
     long countByMountainMountainId(Long mountainId);
 
 
-
-    List<Restaurant> findByCourseCourseId(Long courseId);
+    List<Restaurant> findByCourseCourseName(String courseName);
 }

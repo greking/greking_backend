@@ -45,8 +45,8 @@ public class ReviewServiceImpl implements ReviewService{
 
 
     @Override
-    public List<ReviewDto> getReviewWithCourse(Long courseId) {
-        List<Review> review = reviewRepository.findByCourseCourseId(courseId);
+    public List<ReviewDto> getReviewWithCourse(String courseName) {
+        List<Review> review = reviewRepository.findByCourseCourseName(courseName);
         return review.stream() //리스트 'review'에서 스트림을 생성
                 .map(this::convertToDto) //각 review 객체를 reviewDto로 변환
                 .collect(Collectors.toList()); //

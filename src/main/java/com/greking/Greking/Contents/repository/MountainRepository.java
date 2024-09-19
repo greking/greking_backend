@@ -12,5 +12,6 @@ public interface MountainRepository extends JpaRepository<Mountain, Long> {
 
     List<Mountain> findByAddressState(String addressState);
 
+    Mountain findByName(String name);
 }
 

@@ -51,10 +51,10 @@ public class ReviewController {
     }
 
     //리뷰 조회 - 코스
-    @GetMapping("/{courseId}")
-    public ResponseEntity<List<ReviewDto>> getCourseReview(@PathVariable (name = "courseId") Long courseId){
+    @GetMapping("/{courseName}")
+    public ResponseEntity<List<ReviewDto>> getCourseReview(@PathVariable (name = "courseName") String courseName){
         try{
-            List<ReviewDto> reviewDto = reviewService.getReviewWithCourse(courseId);
+            List<ReviewDto> reviewDto = reviewService.getReviewWithCourse(courseName);
             return new ResponseEntity<>(reviewDto, HttpStatus.OK);
         } catch (Exception e){
             System.out.println("Error occurred while fetching review: " + e.getMessage());
