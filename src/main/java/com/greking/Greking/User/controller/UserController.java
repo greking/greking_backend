@@ -186,7 +186,7 @@ public class UserController {
             Map<String, Object> response = new HashMap<>();
             response.put("levelUp", leveledUp);
             response.put("message", "Hiking completed successfully");
-            response.put("now level", user.getGrade().getLevel());
+            response.put("now_level", user.getGrade().getLevel());
             response.put("experience", user.getGrade().getExperience());
 
             return new ResponseEntity<>(response, HttpStatus.OK);
