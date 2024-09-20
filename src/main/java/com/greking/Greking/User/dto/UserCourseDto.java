@@ -20,7 +20,7 @@ public class UserCourseDto {
 
     private String difficulty; //코스 난이도
 
-    private LocalDateTime addedAt; //코스를 담은 시점
+    private String addedTime; //코스를 담은 시점
 
     private String distance; // 이동거리 (킬로미터 단위)
 

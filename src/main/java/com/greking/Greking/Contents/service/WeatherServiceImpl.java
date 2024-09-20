@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 
@@ -50,12 +51,14 @@ public class WeatherServiceImpl implements WeatherService {
         weather.setMountainName(mountain.getName());
         weather.setAddressState(mountain.getAddressState());
         weather.setTmFc(LocalDateTime.now());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd");
 
-        weather.setForecastDate3(LocalDate.now().plusDays(3));
-        weather.setForecastDate4(LocalDate.now().plusDays(4));
-        weather.setForecastDate5(LocalDate.now().plusDays(5));
-        weather.setForecastDate6(LocalDate.now().plusDays(6));
-        weather.setForecastDate7(LocalDate.now().plusDays(7));
+
+        weather.setForecastDate3(LocalDate.now().plusDays(3).format(formatter));
+        weather.setForecastDate3(LocalDate.now().plusDays(4).format(formatter));
+        weather.setForecastDate3(LocalDate.now().plusDays(5).format(formatter));
+        weather.setForecastDate3(LocalDate.now().plusDays(6).format(formatter));
+        weather.setForecastDate3(LocalDate.now().plusDays(7).format(formatter));
 
 
         // 추가적으로 파싱된 데이터를 Weather 객체에 설정하고 DB에 저장
@@ -70,6 +73,21 @@ public class WeatherServiceImpl implements WeatherService {
 
         Weather weather = weatherRepository.findByMountain(mountain);
         return convertToDto(weather);
+    }
+
+    public String simplifyWeatherCondition(String condition) {
+        if (condition.contains("비/눈")) {
+            return "비"; // 비/눈이 들어오면 비로 처리
+        } else if (condition.contains("비")) {
+            return "비"; // 비가 포함된 경우 비로 처리
+        } else if (condition.contains("눈")) {
+            return "눈"; // 눈이 포함된 경우 눈으로 처리
+        } else if (condition.contains("흐림") || condition.contains("흐리고") || condition.contains("구름")) {
+            return "흐림"; // 흐림이 포함된 경우 흐림으로 처리
+        } else if (condition.contains("맑음")) {
+            return "맑음"; // 맑음으로 처리
+        }
+        return "흐림"; // 분류되지 않는 경우 기타로 처리
     }
 
     private WeatherDto convertToDto(Weather weather) {
@@ -144,15 +162,36 @@ public class WeatherServiceImpl implements WeatherService {
             try {
                 Weather existingData = weatherRepository.findByMountain(mountain);
 
-                existingData.setForecastDate(LocalDate.now());
-                existingData.setForecastDate1(LocalDate.now().plusDays(1));
-                existingData.setForecastDate2(LocalDate.now().plusDays(2));
-                existingData.setForecastDate3(LocalDate.now().plusDays(3));
-                existingData.setForecastDate4(LocalDate.now().plusDays(4));
-                existingData.setForecastDate5(LocalDate.now().plusDays(5));
-                existingData.setForecastDate6(LocalDate.now().plusDays(6));
-                existingData.setForecastDate7(LocalDate.now().plusDays(7));
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd");
 
+                existingData.setForecastDate(LocalDate.now().format(formatter));
+
+                for (int i = 1; i <= 7; i++) {
+                    String forecastDate = LocalDate.now().plusDays(i).format(formatter);
+                    switch (i) {
+                        case 1:
+                            existingData.setForecastDate1(forecastDate);
+                            break;
+                        case 2:
+                            existingData.setForecastDate2(forecastDate);
+                            break;
+                        case 3:
+                            existingData.setForecastDate3(forecastDate);
+                            break;
+                        case 4:
+                            existingData.setForecastDate4(forecastDate);
+                            break;
+                        case 5:
+                            existingData.setForecastDate5(forecastDate);
+                            break;
+                        case 6:
+                            existingData.setForecastDate6(forecastDate);
+                            break;
+                        case 7:
+                            existingData.setForecastDate7(forecastDate);
+                            break;
+                    }
+                }
 
                 existingData.setCondition(existingData.getCondition3());
                 existingData.setTemperature(existingData.getTemperature3());
@@ -174,23 +213,24 @@ public class WeatherServiceImpl implements WeatherService {
 
                 Weather parsedData = parseWeatherData(forecastData, temperatureData);
 
-                existingData.setCondition3(parsedData.getCondition3());
+
+                existingData.setCondition3(simplifyWeatherCondition(parsedData.getCondition3()));
                 existingData.setTemperature3(parsedData.getTemperature3());
                 existingData.setPredictRain3(parsedData.getPredictRain3());
 
-                existingData.setCondition4(parsedData.getCondition4());
+                existingData.setCondition4(simplifyWeatherCondition(parsedData.getCondition4()));
                 existingData.setTemperature4(parsedData.getTemperature4());
                 existingData.setPredictRain4(parsedData.getPredictRain4());
 
-                existingData.setCondition5(parsedData.getCondition5());
+                existingData.setCondition5(simplifyWeatherCondition(parsedData.getCondition5()));
                 existingData.setTemperature5(parsedData.getTemperature5());
                 existingData.setPredictRain5(parsedData.getPredictRain5());
 
-                existingData.setCondition6(parsedData.getCondition6());
+                existingData.setCondition6(simplifyWeatherCondition(parsedData.getCondition6()));
                 existingData.setTemperature6(parsedData.getTemperature6());
                 existingData.setPredictRain6(parsedData.getPredictRain6());
 
-                existingData.setCondition7(parsedData.getCondition7());
+                existingData.setCondition7(simplifyWeatherCondition(parsedData.getCondition7()));
                 existingData.setTemperature7(parsedData.getTemperature7());
                 existingData.setPredictRain7(parsedData.getPredictRain7());
 

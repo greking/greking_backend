@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -150,7 +151,7 @@ public class UserServiceImpl implements UserService {
                 .userCourseId(userCourse.getUserCourseId())
                 .course(userCourse.getCourse())
                 .difficulty(userCourse.getDifficulty())
-                .addedAt(userCourse.getAddedAt())
+                .addedTime(userCourse.getAddedTime())
                 .distance(userCourse.getDistance())
                 .calories(userCourse.getCalories())
                 .duration(userCourse.getDuration())
@@ -167,13 +168,14 @@ public class UserServiceImpl implements UserService {
     public UserCourse addCourseToMyCourse(String userId, String courseName) {
         User user = getUserById(userId);
         Course course = courseRepository.findByCourseName(courseName);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 
         UserCourse userCourse = new UserCourse();
         userCourse.setCourseName(course.getCourseName());
         userCourse.setDifficulty(course.getDifficulty());
         userCourse.setUser(user);
         userCourse.setCourse(course);
-        userCourse.setAddedAt(LocalDateTime.now());
+        userCourse.setAddedTime(LocalDateTime.now().format(formatter));
 
         return userCourseRepository.save(userCourse);
     }
