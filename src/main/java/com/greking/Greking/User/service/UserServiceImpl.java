@@ -69,16 +69,11 @@ public class UserServiceImpl implements UserService {
 
     // 로그인로직 구현
     @Override
-    public String login(String userId, String email, String password) {
-        User user;
+    public String login(String email, String password) {
 
-        if (userId != null && !userId.isEmpty()) {
-            user = userRepository.findByUserid(userId)
-                    .orElseThrow(() -> new RuntimeException("User not found"));
-        } else {
-            user = userRepository.findByEmail(email)
-                    .orElseThrow(() -> new RuntimeException("User not found"));
-        }
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new RuntimeException("Invalid password");

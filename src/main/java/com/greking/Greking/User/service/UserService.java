@@ -15,7 +15,7 @@ public interface UserService {
     User registerUser(User user) throws Exception;
 
     //회원 로그인
-    String login(String userid, String email, String Password);
+    String login(String email, String Password);
 
     //회원삭제 method
     void deleteUser(String userId);

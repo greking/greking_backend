@@ -63,17 +63,17 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody Map<String, String> loginRequest){
         try{
-            String userid = loginRequest.get("userId");
             String email = loginRequest.get("email");
             String password = loginRequest.get("password");
 
-            User user = userRepository.findByUserid(userid)
+            User user = userRepository.findByEmail(email)
                     .orElseThrow(() -> new RuntimeException("user is not found"));
 
             //로그인 로직 처리 및 JWT토큰 생성
-            String token = userService.login(userid, email, password);
+            String token = userService.login(email, password);
 
             Map<String, String> response = new HashMap<>();
+            response.put("userId", user.getUserid()); //userId반환
             response.put("nickname", user.getNickname()); //nickname반환
             response.put("token", token); //JWT 토큰 반환
 
