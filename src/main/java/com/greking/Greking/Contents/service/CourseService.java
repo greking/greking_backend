@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.greking.Greking.Contents.domain.Course;
 import com.greking.Greking.Contents.dto.CourseDto;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -26,4 +27,6 @@ public interface CourseService {
     Course updateCourse(Long id) throws JsonProcessingException;
     void deleteCourse(Long id);
 
+
+    void saveImagePath(String courseName, String imagePath);
 }

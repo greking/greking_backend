@@ -2,12 +2,24 @@ package com.greking.Greking.Contents.controller;
 
 import com.greking.Greking.Contents.domain.Course;
 import com.greking.Greking.Contents.dto.CourseDto;
+import com.greking.Greking.Contents.dto.DirectoryRequest;
+import com.greking.Greking.Contents.repository.CourseRepository;
 import com.greking.Greking.Contents.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
@@ -15,15 +27,57 @@ import java.util.Map;
 @RequestMapping("/api/courses")
 public class CourseController {
 
-    @Autowired
-    private final CourseService courseService;
 
+    private final CourseService courseService;
+    private final CourseRepository courseRepository;
 
     //생성자주입
     @Autowired
-    public CourseController(CourseService courseService) {
+    public CourseController(CourseService courseService, CourseRepository courseRepository) {
         this.courseService = courseService;
+        this.courseRepository = courseRepository;
     }
+
+
+    // 로컬 이미지 경로를 저장하고 DB에 저장하는 API
+    @PostMapping("/save-image-path")
+    public ResponseEntity<String> saveCourseImagePath(@RequestBody String courseName, @RequestBody String imagePath) {
+        try {
+            // 이미지 경로를 DB에 저장
+            courseService.saveImagePath(courseName, imagePath);
+            return ResponseEntity.ok("Image path saved successfully!");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save image path.");
+        }
+    }
+
+    @GetMapping("/image/{courseName}")
+    public ResponseEntity<Resource> getCourseImage(@PathVariable(name="courseName") String courseName) {
+        // 코스 정보에서 이미지 경로를 가져옴
+        Course course = courseRepository.findByCourseName(courseName);
+
+        System.out.println(course);
+
+        if (course != null) {
+            try {
+                // 이미지 파일 경로에서 Resource 객체 생성
+                Path imagePath = Paths.get(course.getCourseImage());
+                Resource imageResource = new UrlResource(imagePath.toUri());
+
+                // 이미지 파일을 ResponseEntity로 반환
+                return ResponseEntity.ok()
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + imagePath.getFileName().toString() + "\"")
+                        .contentType(MediaType.IMAGE_JPEG) // 적절한 MIME 타입으로 설정 (여기서는 JPEG로 가정)
+                        .body(imageResource);
+
+            } catch (MalformedURLException e) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
 
     @GetMapping("/getInfo")
     public ResponseEntity<CourseDto> getCourseById(@RequestParam(name="courseId") Long courseId){

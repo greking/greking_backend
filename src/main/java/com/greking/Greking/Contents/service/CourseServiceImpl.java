@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -146,10 +147,17 @@ public class CourseServiceImpl implements CourseService {
         }
     }
 
-    // 이미지 파일을 Base64로 인코딩하는 메서드
-    public String encodeImageToBase64(String imagePath) throws IOException {
-        byte[] imageBytes = Files.readAllBytes(Paths.get(imagePath));
-        return Base64.getEncoder().encodeToString(imageBytes);
+    public void saveImagePath(String courseName, String imagePath) {
+        // 코스 이름을 기준으로 Course 엔티티 조회
+        Course course = courseRepository.findByCourseName(courseName);
+        if (course != null) {
+            // 코스가 존재하면 이미지 경로를 저장 (업데이트)
+            course.setCourseImage(imagePath);
+            courseRepository.save(course);
+        } else {
+            // 코스가 없으면 새로 생성
+            throw new IllegalArgumentException("course not found");
+        }
     }
 
 
