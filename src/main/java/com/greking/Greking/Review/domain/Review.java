@@ -25,7 +25,7 @@ public class Review {
     private String review_text;
 
     private String courseName;
-    private String nickName;
+    private String nickname;
 
 
     @ManyToOne

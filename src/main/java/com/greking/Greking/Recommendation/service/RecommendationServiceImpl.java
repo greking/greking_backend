@@ -2,6 +2,7 @@ package com.greking.Greking.Recommendation.service;
 
 import com.greking.Greking.Contents.domain.Course;
 import com.greking.Greking.Contents.repository.CourseRepository;
+import com.greking.Greking.Review.domain.Review;
 import com.greking.Greking.Review.dto.ReviewDto;
 import com.greking.Greking.Review.repository.ReviewRepository;
 import com.greking.Greking.Review.service.ReviewService;
@@ -35,13 +36,16 @@ public class RecommendationServiceImpl implements RecommendationService{
 
 
     @Override
-    public List<Course> recommendCoursesForUser(Long userId) {
-        User user = userRepository.findById(userId)
+    public List<Course> recommendCoursesForUser(String userId) {
+        User user = userRepository.findByUserid(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        List<ReviewDto> userReviews = reviewRepository.findByUser(user);
+        System.out.println(user);
+
+        List<Review> userReviews = reviewRepository.findByUser(user);
 
         List<ReviewDto> review = reviewService.getAllReview(); //전체 리뷰가져오기
+
         int reviewSize = review.size();
 
 
@@ -54,15 +58,16 @@ public class RecommendationServiceImpl implements RecommendationService{
         //cold start
         else {
             String difficulty = mapFitnessLevelToDifficulty(user.getFitnessLevel());
+            System.out.println(difficulty);
             return courseRepository.findByDifficulty(difficulty);
         }
     }
 
     //1. 사용자가 좋아한 코스 찾기 (평점 4점이상)
-    private List<Course> findFavoriteCourses(List<ReviewDto> userReview){
+    private List<Course> findFavoriteCourses(List<Review> userReview){
         List<Course> favoriteCourses = new ArrayList<>();
 
-        for (ReviewDto review : userReview) {
+        for (Review review : userReview) {
             if (review.getReview_score() >= 4) { // 예: 평점 4 이상인 코스만 고려
                 favoriteCourses.add(review.getCourse());
             }

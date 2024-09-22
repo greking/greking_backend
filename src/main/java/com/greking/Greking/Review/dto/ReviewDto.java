@@ -16,7 +16,7 @@ public class ReviewDto {
     private String review_text;
 
     private String courseName;
-    private String nickName;
+    private String nickname;
 
     private Course course;
 

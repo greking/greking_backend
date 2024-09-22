@@ -84,7 +84,7 @@ public class ReviewServiceImpl implements ReviewService{
 
         Review review = new Review();
 
-        review.setNickName(user.getNickname());
+        review.setNickname(user.getNickname());
         review.setCourseName(userCourse.getCourseName());
         review.setCourse(userCourse.getCourse());
         review.setUser(userService.getUserById(userId));
@@ -104,7 +104,7 @@ public class ReviewServiceImpl implements ReviewService{
                 .review_difficulty(review.getReview_difficulty())
                 .review_text(review.getReview_text())
                 .courseName(review.getCourseName())
-                .nickName(review.getNickName())
+                .nickname(review.getNickname())
                 .build();
     }
 

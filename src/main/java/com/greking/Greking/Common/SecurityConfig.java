@@ -65,6 +65,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/recommend/{userId}").permitAll()
 
                         .requestMatchers(HttpMethod.GET, "/api/users/validate/{nickname}").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/recommend/{userId}").permitAll()
 
                         .requestMatchers("/api/gpx/upload_directory").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/gpx/{courseName}").permitAll()

@@ -5,6 +5,8 @@ import com.greking.Greking.Review.dto.ReviewDto;
 import com.greking.Greking.User.domain.User;
 import com.greking.Greking.User.domain.UserCourse;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +17,7 @@ public interface ReviewRepository extends JpaRepository<Review,Long> {
 
     List<Review> findByCourseCourseName(String courseName);
 
-    List<ReviewDto> findByUser(User user);
+    List<Review> findByUser(User user);
 
 
 }

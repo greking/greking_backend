@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface RecommendationService {
 
-    List<Course> recommendCoursesForUser(Long userId);
+    List<Course> recommendCoursesForUser(String userId);
 }
