@@ -10,10 +10,10 @@ import com.greking.Greking.Contents.repository.CourseRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -145,6 +145,13 @@ public class CourseServiceImpl implements CourseService {
             throw new IllegalArgumentException("course not found");
         }
     }
+
+    // 이미지 파일을 Base64로 인코딩하는 메서드
+    public String encodeImageToBase64(String imagePath) throws IOException {
+        byte[] imageBytes = Files.readAllBytes(Paths.get(imagePath));
+        return Base64.getEncoder().encodeToString(imageBytes);
+    }
+
 
     //next version
     @Override

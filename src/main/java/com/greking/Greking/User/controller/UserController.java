@@ -103,7 +103,14 @@ public class UserController {
     public ResponseEntity<?> getUser(@PathVariable(name = "userId") String userId){
         try{
             User user = userService.getUserById(userId);
-            return new ResponseEntity<>(user, HttpStatus.OK);
+            Map<String, Object> response = new HashMap<>();
+            response.put("userid", user.getUserid());
+            response.put("nickname", user.getNickname());
+            response.put("email", user.getEmail());
+            response.put("level", user.getGrade().getLevel());
+            response.put("experience", user.getGrade().getExperience());
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }

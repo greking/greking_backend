@@ -82,7 +82,7 @@ public class WeatherServiceImpl implements WeatherService {
             return "비"; // 비가 포함된 경우 비로 처리
         } else if (condition.contains("눈")) {
             return "눈"; // 눈이 포함된 경우 눈으로 처리
-        } else if (condition.contains("흐림") || condition.contains("흐리고") || condition.contains("구름")) {
+        } else if (condition.contains("흐림") || condition.contains("흐리고") || condition.contains("구름많음")) {
             return "흐림"; // 흐림이 포함된 경우 흐림으로 처리
         } else if (condition.contains("맑음")) {
             return "맑음"; // 맑음으로 처리

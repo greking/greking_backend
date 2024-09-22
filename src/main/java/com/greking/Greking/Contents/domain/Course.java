@@ -32,7 +32,8 @@ public class Course {
     @Column(name = "information", columnDefinition = "TEXT")
     private String information; //산정보
 
-    private String courseImage; //코스이미지
+    @Column(name = "course_image", columnDefinition = "TEXT")
+    private String courseImage; // Base64로 인코딩된 이미지 데이터를 저장
     private String courseName; //코스이름
 
     @Column(name = "course_info", columnDefinition = "TEXT")

@@ -120,7 +120,7 @@ public class ApiClient {
     public String fetchRestaurantInfo(double longitude, double latitude) {
         String serviceKey = "DASXubxpgDMIa5rK0gegg8C8RA8J5qTojKbD1JyujPBeWWSwRLDCY1jt7lgcXlyKnd37RWdyfZ6bQAjcdJtM4g==";
         String url = String.format(
-                "https://apis.data.go.kr/B551011/KorService1/locationBasedList1?numOfRows=10&MobileOS=AND&MobileApp=MobileApp&_type=json&mapX=%f&mapY=%f&radius=50000&contentTypeId=39&serviceKey=%s",
+                "https://apis.data.go.kr/B551011/EngService1/locationBasedList1?numOfRows=10&MobileOS=AND&MobileApp=MobileApp&_type=json&mapX=%f&mapY=%f&radius=50000&contentTypeId=82&serviceKey=%s",
                 longitude, latitude, serviceKey);
 
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
