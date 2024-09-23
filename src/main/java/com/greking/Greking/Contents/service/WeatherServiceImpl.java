@@ -163,6 +163,7 @@ public class WeatherServiceImpl implements WeatherService {
                 Weather existingData = weatherRepository.findByMountain(mountain);
 
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd");
+                existingData.setTmFc(LocalDateTime.now());
 
                 existingData.setForecastDate(LocalDate.now().format(formatter));
 

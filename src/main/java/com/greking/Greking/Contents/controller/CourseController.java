@@ -2,7 +2,6 @@ package com.greking.Greking.Contents.controller;
 
 import com.greking.Greking.Contents.domain.Course;
 import com.greking.Greking.Contents.dto.CourseDto;
-import com.greking.Greking.Contents.dto.DirectoryRequest;
 import com.greking.Greking.Contents.repository.CourseRepository;
 import com.greking.Greking.Contents.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +13,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.File;
-import java.io.IOException;
+
 import java.net.MalformedURLException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
