@@ -68,6 +68,14 @@ public class RestaurantServiceImpl implements RestaurantService {
                 break; // 이미 10개가 저장되었다면 추가하지 않음
             }
 
+            //한글 식당이름 자르기
+            String newName = restaurant.getName();
+
+            if (newName != null){
+                newName = newName.substring(0, newName.indexOf("(")).trim();
+                restaurant.setName(newName);  // 잘라낸 이름을 restaurant 객체에 설정
+            }
+
             // 중복 체크: 이름과 주소로 식별
             boolean exists = restaurantRepository.existsByCourseAndNameAndAddress(
                     course, restaurant.getName(), restaurant.getAddress());

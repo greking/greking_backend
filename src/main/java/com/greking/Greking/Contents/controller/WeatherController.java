@@ -29,6 +29,7 @@ public class WeatherController {
     @GetMapping("/getInfo/{mountainName}")
     public ResponseEntity<WeatherDto> getWeatherForecast(@PathVariable(name = "mountainName") String mountainName) {
         try {
+
             WeatherDto weather = weatherService.getWeatherForecast(mountainName);
             return ResponseEntity.ok(weather); // 데이터가 있을 경우 200 응답과 함께 데이터 반환
         } catch (Exception e) {

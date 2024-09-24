@@ -70,7 +70,7 @@ public class WeatherServiceImpl implements WeatherService {
     public WeatherDto getWeatherForecast(String mountainName) {
         // 산 이름을 기반으로 DB에서 산을 조회
         Mountain mountain = mountainRepository.findByName(mountainName);
-
+        
         Weather weather = weatherRepository.findByMountain(mountain);
         return convertToDto(weather);
     }
