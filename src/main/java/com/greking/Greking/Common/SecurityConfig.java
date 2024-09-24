@@ -45,6 +45,8 @@ public class SecurityConfig {
 
                         .requestMatchers("/api/users/register").permitAll() //회원가입은 인증되지 않은 사용자가 사용해야하므로 permitAll을 선언해야함
                         .requestMatchers(HttpMethod.GET,"/api/users/{userId}").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/users/validate/email/{email}").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/users/validate/nickname/{nickname}").permitAll()
                         .requestMatchers("/api/users/login").permitAll()
                         .requestMatchers("/api/survey/submit").permitAll()
 

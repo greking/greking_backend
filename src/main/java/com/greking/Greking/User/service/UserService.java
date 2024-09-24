@@ -23,6 +23,8 @@ public interface UserService {
     //닉네임 중복 method
     boolean validateNickname(String nickname);
 
+    boolean validateEmail(String email);
+
 
     //회원 코스정보 - 예정
     List<UserCourseDto> getMyExpectedCourse(String userId);

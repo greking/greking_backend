@@ -107,11 +107,18 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+
     // 닉네임 중복 검사
     @Override
     public boolean validateNickname(String nickname) {
         logger.info("Validating user nickname {}", nickname);
         return userRepository.existsByNickname(nickname);
+    }
+
+    @Override
+    public boolean validateEmail(String email) {
+        logger.info("Validating user email {}", email);
+        return userRepository.existsByEmail(email);
     }
 
     // 회원 코스 - 예정가져오기

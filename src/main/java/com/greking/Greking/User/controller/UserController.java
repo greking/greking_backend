@@ -117,9 +117,14 @@ public class UserController {
     }
 
     //닉네임 중복확인
-    @GetMapping("/validate/{nickname}")
+    @GetMapping("/validate/nickname/{nickname}")
     public ResponseEntity<Boolean> validateNickname(@PathVariable(name = "nickname")String nickname){
         return ResponseEntity.ok(userService.validateNickname(nickname));
+    }
+
+    @GetMapping("/validate/email/{email}")
+    public ResponseEntity<Boolean> validateEmail(@PathVariable(name = "email") String email){
+        return ResponseEntity.ok(userService.validateEmail(email));
     }
 
 
