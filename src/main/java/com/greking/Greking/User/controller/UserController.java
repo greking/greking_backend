@@ -116,6 +116,9 @@ public class UserController {
         }
     }
 
+
+
+
     //닉네임 중복확인
     @GetMapping("/validate/nickname/{nickname}")
     public ResponseEntity<Boolean> validateNickname(@PathVariable(name = "nickname")String nickname){

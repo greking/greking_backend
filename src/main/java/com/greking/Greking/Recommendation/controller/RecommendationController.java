@@ -35,12 +35,19 @@ public class RecommendationController {
             List<Course> recommendedCourses = recommendationService.recommendCoursesForUser(userId);
             List<Map<String, String>> responseList = new ArrayList<>();
 
+            int count = 0;
             // 각 코스의 mountainName과 courseName을 Map으로 변환하여 리스트에 추가
             for (Course course : recommendedCourses) {
+                if (count == 5){
+                    break;
+                }
                 Map<String, String> courseMap = new HashMap<>();
                 courseMap.put("mountainName", course.getMountainName());
                 courseMap.put("courseName", course.getCourseName());
+                courseMap.put("courseImage", course.getCourseImage());
                 responseList.add(courseMap);
+                count++;
+
             }
 
             // 결과를 ResponseEntity로 반환
