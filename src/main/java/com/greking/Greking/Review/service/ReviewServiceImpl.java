@@ -8,6 +8,9 @@ import com.greking.Greking.User.domain.UserCourse;
 import com.greking.Greking.User.repository.UserCourseRepository;
 import com.greking.Greking.User.repository.UserRepository;
 import com.greking.Greking.User.service.UserService;
+import com.greking.Greking.User.service.UserServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +26,7 @@ public class ReviewServiceImpl implements ReviewService{
     private final UserService userService;
     private final UserRepository userRepository;
     private final UserCourseRepository userCourseRepository;
+    private static final Logger logger = LoggerFactory.getLogger(ReviewServiceImpl.class);
 
     @Autowired
     public ReviewServiceImpl(ReviewRepository reviewRepository, UserService userService, UserRepository userRepository, UserCourseRepository userCourseRepository) {
@@ -97,6 +101,18 @@ public class ReviewServiceImpl implements ReviewService{
         return reviewRepository.save(review);
     }
 
+    @Override
+    public boolean validReview(String userId, Long userCourseId) {
+
+        User user = userRepository.findByUserid(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        UserCourse userCourse = userCourseRepository.findById(userCourseId)
+                .orElseThrow(() -> new RuntimeException("UserCourse not found"));
+
+        return reviewRepository.existsByUserAndUserCourse(user, userCourse);
+    }
+
     private ReviewDto convertToDto(Review review) {
         return ReviewDto.builder()
                 .reviewId(review.getReviewId())
@@ -107,5 +123,7 @@ public class ReviewServiceImpl implements ReviewService{
                 .nickname(review.getNickname())
                 .build();
     }
+
+
 
 }

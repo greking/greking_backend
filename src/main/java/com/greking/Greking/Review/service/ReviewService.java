@@ -22,5 +22,6 @@ public interface ReviewService {
 
     Review createReview(String userId, Long userCourseId, int review_score, String review_difficulty, String review_text);
 
+    boolean validReview(String userId, Long userCourseId);
 
 }

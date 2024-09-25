@@ -76,6 +76,11 @@ public class ReviewController {
         }
     }
 
+    @GetMapping("/validate/{userId}/{userCourseId}")
+    public ResponseEntity<Boolean> validReview(@PathVariable(name = "userId") String userId,@PathVariable(name ="userCourseId")Long userCourseId){
+        return ResponseEntity.ok(reviewService.validReview(userId,userCourseId));
+    }
+
 
 
 }
