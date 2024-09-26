@@ -48,6 +48,7 @@ public class RecommendationController {
                 courseMap.put("courseId", String.valueOf(course.getCourseId()));
                 courseMap.put("information", course.getInformation());
                 courseMap.put("distance", course.getDistance());
+                courseMap.put("duration", course.getDuration());
                 courseMap.put("difficulty", course.getDifficulty());
                 courseMap.put("altitude", course.getAltitude());
 
