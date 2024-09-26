@@ -45,6 +45,12 @@ public class RecommendationController {
                 courseMap.put("mountainName", course.getMountainName());
                 courseMap.put("courseName", course.getCourseName());
                 courseMap.put("courseImage", course.getCourseImage());
+                courseMap.put("courseId", String.valueOf(course.getCourseId()));
+                courseMap.put("information", course.getInformation());
+                courseMap.put("distance", course.getDistance());
+                courseMap.put("difficulty", course.getDifficulty());
+                courseMap.put("altitude", course.getAltitude());
+
                 responseList.add(courseMap);
                 count++;
 

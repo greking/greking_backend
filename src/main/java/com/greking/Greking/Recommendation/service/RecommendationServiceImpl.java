@@ -34,7 +34,7 @@ public class RecommendationServiceImpl implements RecommendationService{
     }
 
 
-
+    //cold start
     @Override
     public List<Course> recommendCoursesForUser(String userId) {
         User user = userRepository.findByUserid(userId)
