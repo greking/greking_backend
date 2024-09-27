@@ -1,6 +1,7 @@
 package com.greking.Greking.User.domain;
 
 
+import com.greking.Greking.Review.domain.Review;
 import com.greking.Greking.Survey.domain.FitnessLevel;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -11,6 +12,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import jakarta.validation.constraints.Size;
+
+import java.util.List;
 
 
 @Entity
@@ -44,5 +47,6 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private FitnessLevel fitnessLevel; //피트니스 레벨
+
 
 }

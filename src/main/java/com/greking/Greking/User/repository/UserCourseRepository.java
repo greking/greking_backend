@@ -13,8 +13,10 @@ public interface UserCourseRepository extends JpaRepository<UserCourse, Long> {
 
     Optional<UserCourse> findById(Long usercourseId);
 
+
     List<UserCourse> findByUser(User user);
 
     void delete(UserCourse userCourse);
 
+    List<UserCourse> findByUserUserid(String userId);
 }

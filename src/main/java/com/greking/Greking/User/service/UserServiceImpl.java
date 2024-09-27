@@ -2,6 +2,8 @@ package com.greking.Greking.User.service;
 
 import com.greking.Greking.Contents.domain.Course;
 import com.greking.Greking.Contents.repository.CourseRepository;
+import com.greking.Greking.Review.domain.Review;
+import com.greking.Greking.Review.repository.ReviewRepository;
 import com.greking.Greking.User.domain.User;
 import com.greking.Greking.User.domain.UserCourse;
 import com.greking.Greking.User.dto.UserCourseDto;
@@ -27,6 +29,7 @@ public class UserServiceImpl implements UserService {
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
     private final UserCourseRepository userCourseRepository;
+    private final ReviewRepository reviewRepository;
     private final CourseRepository courseRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final GradeService gradeService;
@@ -34,10 +37,11 @@ public class UserServiceImpl implements UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Autowired
-    public UserServiceImpl(JwtTokenProvider jwtTokenProvider, UserRepository userRepository, UserCourseRepository userCourseRepository, CourseRepository courseRepository, BCryptPasswordEncoder passwordEncoder, GradeService gradeService) {
+    public UserServiceImpl(JwtTokenProvider jwtTokenProvider, UserRepository userRepository, UserCourseRepository userCourseRepository, ReviewRepository reviewRepository, CourseRepository courseRepository, BCryptPasswordEncoder passwordEncoder, GradeService gradeService) {
         this.jwtTokenProvider = jwtTokenProvider;
         this.userRepository = userRepository;
         this.userCourseRepository = userCourseRepository;
+        this.reviewRepository = reviewRepository;
         this.courseRepository = courseRepository;
         this.passwordEncoder = passwordEncoder;
         this.gradeService = gradeService;
@@ -89,9 +93,23 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void deleteUser(String userId) {
         Optional<User> userOptional = userRepository.findByUserid(userId);
+
         if (userOptional.isPresent()) {
-            userRepository.deleteByUserid(userId); // 사용자 삭제
-            logger.info("User with ID {} deleted", userId);
+        List<UserCourse> userCourse = userCourseRepository.findByUserUserid(userId);
+        List<Review> reviews = reviewRepository.findByUserUserid(userId);
+
+        if (!userCourse.isEmpty()){
+            userCourseRepository.deleteAll(userCourse); //Usercourse 데이터 전체 삭제
+            logger.info("userCourse with ID {} deleted", userCourse);
+        }
+
+        if (!reviews.isEmpty()){
+            reviewRepository.deleteAll(reviews);     // Review 데이터 전체 삭제
+            logger.info("reviews with ID {} deleted", reviews);
+        }
+        userRepository.deleteByUserid(userId);       // User 삭제
+        logger.info("User with ID {} deleted", userId);
+
         } else {
             throw new IllegalArgumentException("User not found.");
         }

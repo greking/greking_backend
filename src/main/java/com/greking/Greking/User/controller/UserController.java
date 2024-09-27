@@ -88,7 +88,7 @@ public class UserController {
 
     //회원 정보 삭제
     @DeleteMapping("/{userId}")
-    public ResponseEntity<?> deleteUser(@RequestParam(name = "userId") String userId) {
+    public ResponseEntity<?> deleteUser(@PathVariable(name = "userId") String userId) {
         try {
             userService.deleteUser(userId);
             String log = "회원 삭제기 완료되었습니다.";

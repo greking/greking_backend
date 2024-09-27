@@ -15,7 +15,10 @@ public interface ReviewRepository extends JpaRepository<Review,Long> {
     List<Review> findByCourseCourseName(String courseName);
 
     List<Review> findByUser(User user);
+    void deleteByUserUserid(String userid);
 
 
     boolean existsByUserAndUserCourse(User user, UserCourse userCourse);
+
+    List<Review> findByUserUserid(String userId);
 }
