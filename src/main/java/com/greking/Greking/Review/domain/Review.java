@@ -23,6 +23,7 @@ public class Review {
     private int review_score;
     private String review_difficulty;
     private String review_text;
+    private String courseImage;
 
     private String courseName;
     private String nickname;

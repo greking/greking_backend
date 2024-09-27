@@ -1,5 +1,7 @@
 package com.greking.Greking.Review.service;
 
+import com.greking.Greking.Contents.domain.Course;
+import com.greking.Greking.Contents.repository.CourseRepository;
 import com.greking.Greking.Review.domain.Review;
 import com.greking.Greking.Review.dto.ReviewDto;
 import com.greking.Greking.Review.repository.ReviewRepository;
@@ -26,14 +28,17 @@ public class ReviewServiceImpl implements ReviewService{
     private final UserService userService;
     private final UserRepository userRepository;
     private final UserCourseRepository userCourseRepository;
+    private final CourseRepository courseRepository;
     private static final Logger logger = LoggerFactory.getLogger(ReviewServiceImpl.class);
 
+
     @Autowired
-    public ReviewServiceImpl(ReviewRepository reviewRepository, UserService userService, UserRepository userRepository, UserCourseRepository userCourseRepository) {
+    public ReviewServiceImpl(ReviewRepository reviewRepository, UserService userService, UserRepository userRepository, UserCourseRepository userCourseRepository, CourseRepository courseRepository) {
         this.reviewRepository = reviewRepository;
         this.userService = userService;
         this.userRepository = userRepository;
         this.userCourseRepository = userCourseRepository;
+        this.courseRepository = courseRepository;
     }
 
 
@@ -82,6 +87,9 @@ public class ReviewServiceImpl implements ReviewService{
         UserCourse userCourse = userCourseRepository.findById(userCourseId)
                 .orElseThrow(() -> new RuntimeException("UserCourse not found"));
 
+        Course course = courseRepository.findByCourseName(userCourse.getCourseName());
+
+
         if (!"완료".equals(userCourse.getStatus())) {
             throw new IllegalStateException("리뷰는 등산 코스가 완료된 후에만 작성 가능합니다.");
         }
@@ -90,6 +98,7 @@ public class ReviewServiceImpl implements ReviewService{
 
         review.setNickname(user.getNickname());
         review.setCourseName(userCourse.getCourseName());
+        review.setCourseImage(course.getCourseImage());
         review.setCourse(userCourse.getCourse());
         review.setUser(userService.getUserById(userId));
         review.setUserCourse(userCourse);
@@ -119,6 +128,7 @@ public class ReviewServiceImpl implements ReviewService{
                 .review_score(review.getReview_score())
                 .review_difficulty(review.getReview_difficulty())
                 .review_text(review.getReview_text())
+                .courseImage(review.getCourseImage())
                 .courseName(review.getCourseName())
                 .nickname(review.getNickname())
                 .build();

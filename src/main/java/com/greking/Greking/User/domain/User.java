@@ -32,7 +32,6 @@ public class User {
     @NotBlank
     private String password;
 
-    @Pattern(regexp = "^[a-zA-Z0-9]+$")
     @Size(max = 20)
     @NotBlank
     private String nickname;
