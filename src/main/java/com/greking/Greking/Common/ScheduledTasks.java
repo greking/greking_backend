@@ -20,7 +20,7 @@ public class ScheduledTasks {
     }
 
     @Retryable(value = {Exception.class}, maxAttempts = 3, backoff = @Backoff(delay = 5000))
-    @Scheduled(cron = "0 0 7 * * ?")  // 10초마다 실행
+    @Scheduled(cron = "0 0 0 * * ?")  // 10초마다 실행
     public void updateWeatherData(){
         try {
             weatherService.updateAllWeatherData();
